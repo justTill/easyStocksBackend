@@ -11,6 +11,10 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+      - name: Test
+        run: pwd
+      - name: Test1
+        run: ls
       - name: Build with gradle
         run: ./gradlew build
 

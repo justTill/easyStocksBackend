@@ -1,0 +1,33 @@
+name: Test_And_Deploy
+on:
+  push:
+
+env:
+
+jobs:
+  healthcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Intall dependencies
+        run: echo "Install depenencies" # |
+
+  buildAndPush:
+    needs: healthcheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Log into registry
+        run: docker login -u ${{ secrets.DOCKERNAME }} -p ${{ secrets.DOCKERPASSWORD }}
+
+      - name: Build images
+
+      - name: Push image
+        if: github.ref == 'refs/heads/master'
+        run: |
+          DATABASE_NAME=what_meme SQL_USER=what_meme SQL_PASSWORD=what_meme docker-compose -f docker-compose.prod.yml push
+
+  deployContainer:
+    needs: buildAndPush

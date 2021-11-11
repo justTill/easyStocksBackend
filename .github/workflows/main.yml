@@ -1,6 +1,12 @@
 name: Test_And_Deploy
 on:
   push:
+env:
+  POSTGRES_HOST: localhost
+  POSTGRES_PORT: 5432
+  POSTGRES_DATABASE: postgres
+  POSTGRES_POSTGRES_PW: postgres
+
 jobs:
   healthcheck:
     runs-on: ubuntu-latest
@@ -11,10 +17,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Test
-        run: pwd
-      - name: Test1
-        run: ls
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
 

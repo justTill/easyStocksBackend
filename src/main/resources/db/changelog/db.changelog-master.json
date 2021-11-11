@@ -1,6 +1,39 @@
 {
   "databaseChangeLog": [
     {
+      "changeSet": {
+        "id": "1",
+        "author": "tillpilarczyk",
+        "changes": [
+          {
+            "createTable": {
+              "tableName": "model",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "int",
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "name",
+                    "type": "varchar(255)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
     }
   ]
 }

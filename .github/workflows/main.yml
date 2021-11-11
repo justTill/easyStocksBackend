@@ -33,14 +33,12 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
       - name: Build with gradle
-        run: gradle wrapper && ./gradlew build
+        run: gradle wrapper && ./gradlew build && java -jar build/libs/easy-stocks.jar
       #if: github.ref == 'refs/heads/master'
-      - name: Test
-        run: ls
-      - uses: actions/download-artifact@master
+      - uses: actions/upload-artifact@master
         with:
           name: easy-stocks
-          path: ./build/libs/easy-stcoks-0.0.1.jar
+          path: ./build/libs/easy-stocks.jar
 
   buildAndPush:
     needs: healthcheck
@@ -51,7 +49,7 @@ jobs:
       - uses: actions/download-artifact@master
         with:
           name: easy-stocks
-          path: ./build/libs
+          path: ./build/libs/easy-stocks.jar
       - name: test
         run: ls ./build
       #  needs: healthcheck

@@ -35,7 +35,14 @@ jobs:
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
 
-      # buildAndPush:
+  buildAndPush:
+    needs: healthcheck
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test
+        run: echo "hallo"
       #  needs: healthcheck
       # runs-on: ubuntu-latest
 

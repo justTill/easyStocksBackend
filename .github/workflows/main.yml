@@ -49,9 +49,9 @@ jobs:
       - uses: actions/download-artifact@master
         with:
           name: easy-stocks
-          path: ./build/libs/easy-stocks.jar
-      - name: test
-        run: ls ./build
+          path: ./build/libs/easy-stocks-0.0.1.jar
+      - name: Build Image
+        run: docker build --build-arg JAR_FILE=build/libs/\*jar -t spring .
       #  needs: healthcheck
       # runs-on: ubuntu-latest
 

@@ -1,9 +1,6 @@
 name: Test_And_Deploy
 on:
   push:
-
-env:
-
 jobs:
   healthcheck:
     runs-on: ubuntu-latest

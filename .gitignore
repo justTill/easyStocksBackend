@@ -23,7 +23,6 @@
 hs_err_pid*
 .DS_Store
 .idea
-gradle
 .gradle
 build
 #private application-properties

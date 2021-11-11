@@ -26,7 +26,5 @@ hs_err_pid*
 gradle
 .gradle
 build
-gradlew.bat
-gradlew
 #private application-properties
 src/main/resources/application-*.properties

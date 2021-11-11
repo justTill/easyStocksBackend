@@ -16,7 +16,7 @@ jobs:
       - name: Test1
         run: ls
       - name: Build with gradle
-        run: ./gradlew build
+        run: gradle wrapper && ./gradlew build
 
       # buildAndPush:
       #  needs: healthcheck

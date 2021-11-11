@@ -10,24 +10,29 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Intall dependencies
-        run: echo "Install depenencies" # |
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Build with gradle
+        run: ./gradlew build
 
-  buildAndPush:
-    needs: healthcheck
-    runs-on: ubuntu-latest
+      # buildAndPush:
+      #  needs: healthcheck
+      # runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Log into registry
-        run: docker login -u ${{ secrets.DOCKERNAME }} -p ${{ secrets.DOCKERPASSWORD }}
+      #steps:
+      # - uses: actions/checkout@v2
+      #- name: Log into registry
+      # run: docker login -u ${{ secrets.DOCKERNAME }} -p ${{ secrets.DOCKERPASSWORD }}
 
-      - name: Build images
+      #     - name: Build images
 
-      - name: Push image
-        if: github.ref == 'refs/heads/master'
-        run: |
-          DATABASE_NAME=what_meme SQL_USER=what_meme SQL_PASSWORD=what_meme docker-compose -f docker-compose.prod.yml push
+      #    - name: Push image
+      #     if: github.ref == 'refs/heads/master'
+      #    run: |
+      #     DATABASE_NAME=what_meme SQL_USER=what_meme SQL_PASSWORD=what_meme docker-compose -f docker-compose.prod.yml push
 
-  deployContainer:
-    needs: buildAndPush
+    #deployContainer:
+    # needs: buildAndPush

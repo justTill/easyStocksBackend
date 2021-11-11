@@ -36,7 +36,8 @@ jobs:
         run: gradle wrapper && ./gradlew build
       #if: github.ref == 'refs/heads/master'
       - uses: actions/download-artifact@master
-        with: easy-stocks
+        with:
+        name: easy-stocks
         path: ./build/libs/easy-stcoks-0.0.1.jar
 
   buildAndPush:

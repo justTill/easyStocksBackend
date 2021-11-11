@@ -35,7 +35,7 @@ jobs:
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
       #if: github.ref == 'refs/heads/master'
-      - name:
+      - name: Test
           run: ls
       - uses: actions/download-artifact@master
         with:

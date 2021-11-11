@@ -34,15 +34,23 @@ jobs:
           java-version: '17'
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
+      #if: github.ref == 'refs/heads/master'
+      - uses: actions/download-artifact@master
+        with: easy-stocks
+        path: ./build/libs/easy-stcoks-0.0.1.jar
 
   buildAndPush:
     needs: healthcheck
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       - name: Test
-        run: echo "hallo"
+      - uses: actions/download-artifact@master
+        with:
+          name: easy-stocks
+          path: ./build/libs
+        run: ls
       #  needs: healthcheck
       # runs-on: ubuntu-latest
 

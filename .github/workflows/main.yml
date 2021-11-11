@@ -37,8 +37,8 @@ jobs:
       #if: github.ref == 'refs/heads/master'
       - uses: actions/download-artifact@master
         with:
-        name: easy-stocks
-        path: ./build/libs/easy-stcoks-0.0.1.jar
+          name: easy-stocks
+          path: ./build/libs/easy-stcoks-0.0.1.jar
 
   buildAndPush:
     needs: healthcheck

@@ -45,7 +45,6 @@ jobs:
     #if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
-      - name: Test
       - uses: actions/download-artifact@master
         with:
           name: easy-stocks

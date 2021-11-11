@@ -53,7 +53,7 @@ jobs:
           name: easy-stocks
           path: ./build/libs
       - name: test
-        run: ls && cd build && ls
+        run: ls ./build
       #  needs: healthcheck
       # runs-on: ubuntu-latest
 

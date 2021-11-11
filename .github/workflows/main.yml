@@ -36,7 +36,7 @@ jobs:
         run: gradle wrapper && ./gradlew build
       #if: github.ref == 'refs/heads/master'
       - name: Test
-          run: ls
+        run: ls
       - uses: actions/download-artifact@master
         with:
           name: easy-stocks

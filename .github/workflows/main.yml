@@ -34,16 +34,17 @@ jobs:
           java-version: '17'
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
-      #if: github.ref == 'refs/heads/master'
-      - uses: actions/upload-artifact@master
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
         with:
           name: easy-stocks
           path: ./build/libs/easy-stocks-0.0.1.jar
+        if: github.ref == 'refs/heads/master'
 
   buildAndPush:
     needs: healthcheck
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@master

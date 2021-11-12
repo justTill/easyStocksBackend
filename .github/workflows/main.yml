@@ -1,0 +1,71 @@
+name: Test_And_Deploy
+on:
+  push:
+env:
+  POSTGRES_HOST: localhost
+  POSTGRES_PORT: 5432
+  POSTGRES_DATABASE: easystocks
+  POSTGRES_USER: postgres
+  POSTGRES_PW: postgres
+
+jobs:
+  healthcheck:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: easystocks
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Build with gradle
+        run: gradle wrapper && ./gradlew build
+      #if: github.ref == 'refs/heads/master'
+      - uses: actions/upload-artifact@master
+        with:
+          name: easy-stocks
+          path: ./build/libs/easy-stocks-0.0.1.jar
+
+  buildAndPush:
+    needs: healthcheck
+    runs-on: ubuntu-latest
+    #if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@master
+        with:
+          name: easy-stocks
+          path: ./build/libs/easy-stocks-0.0.1.jar
+      - name: Build Image
+        run: docker build --build-arg JAR_FILE=build/libs/\*jar -t easy-stock-backend .
+      #  needs: healthcheck
+      # runs-on: ubuntu-latest
+
+      #steps:
+      # - uses: actions/checkout@v2
+      #- name: Log into registry
+      # run: docker login -u ${{ secrets.DOCKERNAME }} -p ${{ secrets.DOCKERPASSWORD }}
+
+      #     - name: Build images
+
+      #    - name: Push image
+      #     if: github.ref == 'refs/heads/master'
+      #    run: |
+      #     DATABASE_NAME=what_meme SQL_USER=what_meme SQL_PASSWORD=what_meme docker-compose -f docker-compose.prod.yml push
+
+    #deployContainer:
+    # needs: buildAndPush

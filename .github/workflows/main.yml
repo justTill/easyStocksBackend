@@ -34,6 +34,7 @@ jobs:
           java-version: '17'
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
+      - name: Upload Artifact
         if: github.ref == 'refs/heads/master'
       - uses: actions/upload-artifact@master
         with:

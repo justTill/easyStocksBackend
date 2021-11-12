@@ -35,11 +35,11 @@ jobs:
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
       - name: Upload Artifact
-        if: github.ref == 'refs/heads/master'
-      - uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@master
         with:
           name: easy-stocks
           path: ./build/libs/easy-stocks-0.0.1.jar
+        if: github.ref == 'refs/heads/master'
 
   buildAndPush:
     needs: healthcheck

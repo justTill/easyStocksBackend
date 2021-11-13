@@ -3,15 +3,16 @@
   hosts: localhost #api.mobilesys.de enviromentvariables
 
   vars:
-    POSTGRES_DB: easystocks #  "'{{lookup('env', 'POSTGRES_DB')}}'"
-    POSTGRES_HOST: localhost #  "'{{lookup('env', 'POSTGRES_HOST')}}'"
-    POSTGRES_USER: postgres #  "'{{lookup('env', 'POSTGRES_USER')}}'"
-    POSTGRES_PW: postgres #  "'{{lookup('env', 'POSTGRES_PW')}}'"
-    POSTGRES_PORT: "5432:5432" #  "'{{lookup('env', 'POSTGRES_PORT')}}'"
-    BACKEND_PORT: "8080:8080" #  "'{{lookup('env', 'BACKEND_PORT')}}'"
-    DOCKER_PASSWORD: "pw" #  "'{{lookup('env', 'DOCKER_PASSWORD')}}'"
-    DOCKER_USERNAME: "JustTill" #  "'{{lookup('env', 'DOCKER_USERNAME')}}'"
-    DOCKER_REPOSITORY: "justt" #  "'{{lookup('env', 'DOCKER_REPOSITORY')}}'"
+    POSTGRES_HOST: "'{{lookup('env', 'POSTGRES_HOST')}}'"
+    POSTGRES_DB: "'{{lookup('env', 'POSTGRES_DB')}}'"
+    POSTGRES_USER: "'{{lookup('env', 'POSTGRES_USER')}}'"
+    POSTGRES_PW: "'{{lookup('env', 'POSTGRES_PW')}}'"
+    POSTGRES_PORT: "'{{lookup('env', 'POSTGRES_PORT')}}'"
+    BACKEND_PORT: "'{{lookup('env', 'BACKEND_PORT')}}'"
+    DOCKER_PASSWORD: "'{{lookup('env', 'DOCKER_PASSWORD')}}'"
+    DOCKER_USERNAME: "'{{lookup('env', 'DOCKER_USERNAME')}}'"
+    DOCKER_REPOSITORY: "'{{lookup('env', 'DOCKER_REPOSITORY')}}'"
+
   tasks:
     - name: Database running?
       docker_container_info:
@@ -56,7 +57,7 @@
         username: '{{DOCKER_USERNAME}}'
         password: '{{DOCKER_PASSWORD}}'
 
-    - name: Start new Database if not running
+    - name: Start Backend
       docker_container:
         name: easystocksbackend
         image: '{{DOCKER_REPOSITORY}}'

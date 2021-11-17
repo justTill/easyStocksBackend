@@ -1,0 +1,100 @@
+openapi: "3.0.2"
+info:
+  title: MarketStack API
+  version: "1.0"
+servers:
+  - url: http://api.marketstack.com/v1
+security:
+  - ApiKeyAuth: []
+paths:
+  /test:
+    get:
+      responses:
+        "200":
+          description: OK
+  /eod:
+    get:
+      parameters:
+        - name: symbols
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EOD"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: access_key
+  schemas:
+    EOD:
+      type: object
+      properties:
+        pagination:
+          type: object
+          properties:
+            limit:
+              type: integer
+              format: int32
+            offset:
+              type: integer
+              format: int32
+            count:
+              type: integer
+              format: int32
+            total:
+              type: integer
+              format: int32
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              open:
+                type: number
+              high:
+                type: number
+              low:
+                type: number
+              close:
+                type: integer
+                format: int32
+              volume:
+                type: integer
+                format: int32
+              adj_high:
+                type: string
+                format: nullable
+              adj_low:
+                type: string
+                format: nullable
+              adj_close:
+                type: integer
+                format: int32
+              adj_open:
+                type: string
+                format: nullable
+              adj_volume:
+                type: string
+                format: nullable
+              split_factor:
+                type: integer
+                format: int32
+              dividend:
+                type: integer
+                format: int32
+              symbol:
+                type: string
+              exchange:
+                type: string
+              date:
+                type: string

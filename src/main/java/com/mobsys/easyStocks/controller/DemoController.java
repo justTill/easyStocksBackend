@@ -5,7 +5,7 @@ import java.util.List;
 import com.mobsys.easyStocks.marketstack.MarketStackApi;
 import com.mobsys.easyStocks.persistence.model.DemoModel;
 import com.mobsys.easyStocks.persistence.repository.DemoRepository;
-import com.mobsys.marketstack.model.EOD;
+import com.mobsys.marketstack.model.EndOfDay;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ public class DemoController {
 
     @GetMapping("/marketstack")
     @ResponseBody
-    public EOD getEOD(@RequestParam("symbol") String symbol) {
+    public EndOfDay getEOD(@RequestParam("symbol") String symbol) {
         return api.eodGet(List.of(symbol), null, null, null, null, null, null).block();
     }
 }

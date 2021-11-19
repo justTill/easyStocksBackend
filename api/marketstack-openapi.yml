@@ -9,8 +9,6 @@ security:
 paths:
   /eod:
     get:
-      tags:
-        - EndOfDay
       parameters:
         - $ref: "#/components/parameters/symbols"
         - $ref: "#/components/parameters/exchange"
@@ -24,8 +22,6 @@ paths:
           $ref: "#/components/responses/EndOfDayResponse"
   /eod/{date}:
     get:
-      tags:
-        - EndOfDay
       description: "Specify a date in YYYY-MM-DD format. You can also specify an exact time in ISO-8601 date format, e.g. 2020-05-21T00:00:00+0000. Example: /eod/2020-01-01"
       parameters:
         - in: path
@@ -46,8 +42,6 @@ paths:
           $ref: "#/components/responses/EndOfDayResponse"
   /eod/latest:
     get:
-      tags:
-        - EndOfDay
       description: "Obtain the latest available end-of-day data for one or multiple stock tickers."
       parameters:
         - $ref: "#/components/parameters/symbols"
@@ -60,8 +54,6 @@ paths:
           $ref: "#/components/responses/EndOfDayResponse"
   /tickers:
     get:
-      tags:
-        - Ticker
       description: "Using the API's tickers endpoint you will be able to look up information about one or multiple stock ticker symbols as well as obtain end-of-day, real-time and intraday market data for single tickers. You will be able to find and try out an example API request below."
       parameters:
         - $ref: "#/components/parameters/exchange"
@@ -73,8 +65,6 @@ paths:
           $ref: "#/components/responses/TickerSymbolResponse"
   /tickers/{symbol}:
     get:
-      tags:
-        - Ticker
       description: "Obtain information about a specific ticker symbol by attach it to your API request URL, e.g. /tickers/AAPL."
       parameters:
         - in: path
@@ -90,8 +80,6 @@ paths:
           $ref: "#/components/responses/TickerSymbolResponse"
   /tickers/{symbol}/intraday:
     get:
-      tags:
-        - Intraday
       description: "Obtain real-time & intraday data for a specific stock ticker by attaching /intraday to your URL, e.g. /tickers/AAPL/intraday. This route supports parameters of the Intraday Data endpoint."
       parameters:
         - in: path
@@ -112,8 +100,6 @@ paths:
           $ref: "#/components/responses/IntradayResponse"
   /tickers/{symbol}/intraday/latest:
     get:
-      tags:
-        - Intraday
       description: "Obtain the latest intraday data for a given stock symbol. Example: /tickers/AAPL/intraday/latest."
       parameters:
         - in: path
@@ -128,8 +114,6 @@ paths:
           $ref: "#/components/responses/IntradayDataResponse"
   /tickers/{symbol}/eod:
     get:
-      tags:
-        - EndOfDay
       description: "Obtain end-of-day data for a specific stock ticker by attaching /eod to your URL, e.g. /tickers/AAPL/eod. This route supports parameters of the End-of-day Data endpoint."
       parameters:
         - in: path
@@ -145,8 +129,6 @@ paths:
           $ref: "#/components/responses/EndOfDayResponse"
   /tickers/{symbol}/eod/latest:
     get:
-      tags:
-        - EndOfDay
       description: "Obtain the latest intraday data for a given stock symbol. Example: /tickers/AAPL/intraday/latest"
       parameters:
         - in: path

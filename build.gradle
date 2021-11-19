@@ -34,7 +34,7 @@ sourceSets {
         }
     }
 }
-task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+openApiGenerate {
 	generatorName = "java"
 	inputSpec = "$rootDir/api/marketstack-openapi.yml".toString()
     outputDir = "$buildDir/generated".toString()
@@ -46,5 +46,5 @@ task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateT
     ]
 	library="webclient"
 }
-compileJava.dependsOn(generateCode)
+compileJava.dependsOn tasks.openApiGenerate
 

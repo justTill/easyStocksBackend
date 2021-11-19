@@ -7,34 +7,125 @@ servers:
 security:
   - ApiKeyAuth: []
 paths:
-  /test:
-    get:
-      responses:
-        "200":
-          description: OK
   /eod:
     get:
       parameters:
-        - name: symbols
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              type: string
+        - $ref: "#/components/parameters/symbols"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/date_from"
+        - $ref: "#/components/parameters/date_to"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
       responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EOD"
+        200:
+          $ref: "#/components/responses/EODResponse"
+  /eod/{date}:
+    get:
+      description: Get End-of-Day ata by date
+      parameters:
+        - in: path
+          name: date
+          required: true
+          description: Specify a date in YYYY-MM-DD format. You can also specify an exact time in ISO-8601 date format, e.g. 2020-05-21T00:00:00+0000
+          example: 2020-01-01
+          schema:
+            type: string
+            format: date
+        - $ref: "#/components/parameters/symbols"
+      responses:
+        200:
+          $ref: "#/components/responses/EODResponse"
 components:
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
       in: query
       name: access_key
+  parameters:
+    symbols:
+      in: query
+      name: symbols
+      examples:
+        single:
+          value: AAPL
+        multiple:
+          value: AAPL,MSFT
+      required: true
+      schema:
+        type: array
+        items:
+          type: string
+        minItems: 1
+        maxItems: 100
+      description: "[Required] Specify one or multiple comma-separated stock symbols (tickers) for your request, e.g. AAPL or AAPL,MSFT. Each symbol consumes one API request. Maximum: 100 symbols"
+    exchange:
+      in: query
+      name: exchange
+      example: XNAS
+      required: false
+      schema:
+        type: string
+      description: "[Optional] Filter your results based on a specific stock exchange by specifying the MIC identification of a stock exchange. Example: XNAS"
+    sort:
+      in: query
+      name: sort
+      required: false
+      schema:
+        type: string
+        enum:
+          - ASC
+          - DESC
+      description: "[Optional] By default, results are sorted by date/time descending. Use this parameter to specify a sorting order. Available values: DESC (Default), ASC."
+    date_from:
+      in: query
+      name: date_from
+      required: false
+      schema:
+        type: string
+        format: date
+      description: "[Optional] Filter results based on a specific timeframe by passing a from-date in YYYY-MM-DD format. You can also specify an exact time in ISO-8601 date format, e.g. 2020-05-21T00:00:00+0000."
+    date_to:
+      in: query
+      name: date_to
+      required: false
+      schema:
+        type: string
+        format: date
+      description: "[Optional] Filter results based on a specific timeframe by passing an end-date in YYYY-MM-DD format. You can also specify an exact time in ISO-8601 date format, e.g. 2020-05-21T00:00:00+0000."
+    limit:
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: number
+        format: int32
+        default: 100
+        example: 200
+        maximum: 1000
+      description: "[Optional] Specify a pagination limit (number of results per page) for your API request. Default limit value is 100, maximum allowed limit value is 1000."
+    offset:
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: number
+        format: int32
+        default: 0
+      description: "[Optional] Specify a pagination offset value for your API request. Example: An offset value of 100 combined with a limit value of 10 would show results 100-110. Default value is 0, starting with the first available result."
+    search:
+      in: query
+      name: search
+      required: false
+      schema:
+        type: string
+      description: "[Optional] Use this parameter to search stock tickers by name or ticker symbol."
+  responses:
+    EODResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EOD"
   schemas:
     EOD:
       type: object

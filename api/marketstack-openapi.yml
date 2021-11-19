@@ -1,0 +1,437 @@
+openapi: "3.0.2"
+info:
+  title: MarketStack API
+  version: "1.0"
+servers:
+  - url: http://api.marketstack.com/v1
+security:
+  - ApiKeyAuth: []
+paths:
+  /eod:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/symbols"
+        - $ref: "#/components/parameters/exchange"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/date_from"
+        - $ref: "#/components/parameters/date_to"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        200:
+          $ref: "#/components/responses/EndOfDayResponse"
+  /eod/{date}:
+    get:
+      description: "Specify a date in YYYY-MM-DD format. You can also specify an exact time in ISO-8601 date format, e.g. 2020-05-21T00:00:00+0000. Example: /eod/2020-01-01"
+      parameters:
+        - in: path
+          name: date
+          required: true
+          description: Specify a date in YYYY-MM-DD format. You can also specify an exact time in ISO-8601 date format, e.g. 2020-05-21T00:00:00+0000
+          example: 2020-01-01
+          schema:
+            type: string
+            format: date
+        - $ref: "#/components/parameters/symbols"
+        - $ref: "#/components/parameters/exchange"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        200:
+          $ref: "#/components/responses/EndOfDayResponse"
+  /eod/latest:
+    get:
+      description: "Obtain the latest available end-of-day data for one or multiple stock tickers."
+      parameters:
+        - $ref: "#/components/parameters/symbols"
+        - $ref: "#/components/parameters/exchange"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        200:
+          $ref: "#/components/responses/EndOfDayResponse"
+  /tickers:
+    get:
+      description: "Using the API's tickers endpoint you will be able to look up information about one or multiple stock ticker symbols as well as obtain end-of-day, real-time and intraday market data for single tickers. You will be able to find and try out an example API request below."
+      parameters:
+        - $ref: "#/components/parameters/exchange"
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        200:
+          $ref: "#/components/responses/TickerSymbolResponse"
+  /tickers/{symbol}:
+    get:
+      description: "Obtain information about a specific ticker symbol by attach it to your API request URL, e.g. /tickers/AAPL."
+      parameters:
+        - in: path
+          required: true
+          name: symbol
+          schema:
+            type: string
+        - $ref: "#/components/parameters/exchange"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        200:
+          $ref: "#/components/responses/TickerSymbolResponse"
+  /tickers/{symbol}/intraday:
+    get:
+      description: "Obtain real-time & intraday data for a specific stock ticker by attaching /intraday to your URL, e.g. /tickers/AAPL/intraday. This route supports parameters of the Intraday Data endpoint."
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/exchange"
+        - $ref: "#/components/parameters/interval"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/date_from"
+        - $ref: "#/components/parameters/date_to"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        200:
+          description: OK
+          $ref: "#/components/responses/IntradayResponse"
+  /tickers/{symbol}/intraday/latest:
+    get:
+      description: "Obtain the latest intraday data for a given stock symbol. Example: /tickers/AAPL/intraday/latest."
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/interval"
+      responses:
+        200:
+          description: OK
+          $ref: "#/components/responses/IntradayDataResponse"
+  /tickers/{symbol}/eod:
+    get:
+      description: "Obtain end-of-day data for a specific stock ticker by attaching /eod to your URL, e.g. /tickers/AAPL/eod. This route supports parameters of the End-of-day Data endpoint."
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        200:
+          $ref: "#/components/responses/EndOfDayResponse"
+  /tickers/{symbol}/eod/latest:
+    get:
+      description: "Obtain the latest intraday data for a given stock symbol. Example: /tickers/AAPL/intraday/latest"
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: "#/components/responses/EndOfDayDataResponse"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: access_key
+  parameters:
+    symbols:
+      in: query
+      name: symbols
+      examples:
+        single:
+          value: AAPL
+        multiple:
+          value: AAPL,MSFT
+      required: true
+      schema:
+        type: array
+        items:
+          type: string
+        minItems: 1
+        maxItems: 100
+      description: "[Required] Specify one or multiple comma-separated stock symbols (tickers) for your request, e.g. AAPL or AAPL,MSFT. Each symbol consumes one API request. Maximum: 100 symbols"
+    exchange:
+      in: query
+      name: exchange
+      required: false
+      schema:
+        type: string
+      description: "[Optional] Filter your results based on a specific stock exchange by specifying the MIC identification of a stock exchange. Example: XNAS"
+    sort:
+      in: query
+      name: sort
+      required: false
+      schema:
+        type: string
+        enum:
+          - ASC
+          - DESC
+      description: "[Optional] By default, results are sorted by date/time descending. Use this parameter to specify a sorting order. Available values: DESC (Default), ASC."
+    date_from:
+      in: query
+      name: date_from
+      required: false
+      schema:
+        type: string
+        format: date
+      description: "[Optional] Filter results based on a specific timeframe by passing a from-date in YYYY-MM-DD format. You can also specify an exact time in ISO-8601 date format, e.g. 2020-05-21T00:00:00+0000."
+    date_to:
+      in: query
+      name: date_to
+      required: false
+      schema:
+        type: string
+        format: date
+      description: "[Optional] Filter results based on a specific timeframe by passing an end-date in YYYY-MM-DD format. You can also specify an exact time in ISO-8601 date format, e.g. 2020-05-21T00:00:00+0000."
+    limit:
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: number
+        format: int32
+        default: 100
+        maximum: 1000
+      description: "[Optional] Specify a pagination limit (number of results per page) for your API request. Default limit value is 100, maximum allowed limit value is 1000."
+    offset:
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: number
+        format: int32
+        default: 0
+      description: "[Optional] Specify a pagination offset value for your API request. Example: An offset value of 100 combined with a limit value of 10 would show results 100-110. Default value is 0, starting with the first available result."
+    search:
+      in: query
+      name: search
+      required: false
+      schema:
+        type: string
+      description: "[Optional] Use this parameter to search stock tickers by name or ticker symbol."
+    interval:
+      in: query
+      name: interval
+      schema:
+        type: string
+        default: 1hour
+        enum:
+          - 1min
+          - 5min
+          - 10min
+          - 15min
+          - 30min
+          - 1hour
+          - 3hour
+          - 6hour
+          - 12hour
+          - 24hour
+      description: "[Optional] Specify your preferred data interval. Available values: 1min, 5min, 10min, 15min, 30min, 1hour (Default), 3hour, 6hour, 12hour and 24hour."
+  responses:
+    EndOfDayResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EndOfDay"
+    EndOfDayDataResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EndOfDayData"
+    TickerSymbolResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TickerSymbol"
+    IntradayResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Intraday"
+    IntradayDataResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/IntradayData"
+  schemas:
+    EndOfDay:
+      type: object
+      properties:
+        pagination:
+          type: object
+          properties:
+            limit:
+              type: integer
+              format: int32
+            offset:
+              type: integer
+              format: int32
+            count:
+              type: integer
+              format: int32
+            total:
+              type: integer
+              format: int32
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/EndOfDayData"
+    EndOfDayData:
+      type: object
+      properties:
+        open:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
+        close:
+          type: integer
+          format: int32
+        volume:
+          type: integer
+          format: int32
+        adj_high:
+          type: string
+          format: nullable
+        adj_low:
+          type: string
+          format: nullable
+        adj_close:
+          type: integer
+          format: int32
+        adj_open:
+          type: string
+          format: nullable
+        adj_volume:
+          type: string
+          format: nullable
+        split_factor:
+          type: integer
+          format: int32
+        dividend:
+          type: integer
+          format: int32
+        symbol:
+          type: string
+        exchange:
+          type: string
+        date:
+          type: string
+    TickerSymbol:
+      type: object
+      properties:
+        name:
+          type: string
+        symbol:
+          type: string
+        has_intraday:
+          type: boolean
+        has_eod:
+          type: boolean
+        country:
+          type: string
+          format: nullable
+        stock_exchange:
+          type: object
+          properties:
+            name:
+              type: string
+            acronym:
+              type: string
+            mic:
+              type: string
+            country:
+              type: string
+            country_code:
+              type: string
+            city:
+              type: string
+            website:
+              type: string
+        timezone:
+          type: object
+          properties:
+            timezone:
+              type: string
+            abbr:
+              type: string
+            abbr_dst:
+              type: string
+    Intraday:
+      type: object
+      properties:
+        pagination:
+          type: object
+          properties:
+            limit:
+              type: integer
+              format: int32
+            offset:
+              type: integer
+              format: int32
+            count:
+              type: integer
+              format: int32
+            total:
+              type: integer
+              format: int32
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+            symbol:
+              type: string
+            has_intraday:
+              type: boolean
+            has_eod:
+              type: boolean
+            country:
+              type: string
+              format: nullable
+            intraday:
+              type: array
+              items:
+                $ref: "#/components/schemas/IntradayData"
+    IntradayData:
+      type: object
+      properties:
+        open:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
+        last:
+          type: string
+          format: nullable
+        close:
+          type: string
+          format: nullable
+        volume:
+          type: string
+          format: nullable
+        date:
+          type: string
+        symbol:
+          type: string
+        exchange:
+          type: string

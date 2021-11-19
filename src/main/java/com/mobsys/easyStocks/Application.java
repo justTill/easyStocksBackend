@@ -13,9 +13,8 @@ public class Application {
 	public String home() {
 		return "Hello Spring Boot";
 	}
-	
+
 	public static void main(final String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-
 }

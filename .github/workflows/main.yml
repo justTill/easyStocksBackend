@@ -34,8 +34,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "11"
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
       - name: Upload Artifact

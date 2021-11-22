@@ -3,7 +3,7 @@ on:
   push:
 env:
   POSTGRES_HOST: localhost
-  POSTGRES_DB: easystocks
+  POSTGRES_DATABASE: easystocks
   POSTGRES_USER: postgres
   POSTGRES_PW: postgres
   POSTGRES_PORT: 5432

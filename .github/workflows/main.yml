@@ -39,6 +39,11 @@ jobs:
           java-version: "11"
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: test-results/**/*.xml
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:

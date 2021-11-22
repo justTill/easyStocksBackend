@@ -1,17 +1,18 @@
 ---
 - name: Update Easy Stocks Application
-  hosts: localhost #api.mobilesys.de enviromentvariables
+  hosts: localhost
 
   vars:
-    POSTGRES_HOST: "'{{lookup('env', 'POSTGRES_HOST')}}'"
-    POSTGRES_DB: "'{{lookup('env', 'POSTGRES_DB')}}'"
-    POSTGRES_USER: "'{{lookup('env', 'POSTGRES_USER')}}'"
-    POSTGRES_PW: "'{{lookup('env', 'POSTGRES_PW')}}'"
-    POSTGRES_PORT: "'{{lookup('env', 'POSTGRES_PORT')}}'"
-    BACKEND_PORT: "'{{lookup('env', 'BACKEND_PORT')}}'"
-    DOCKER_PASSWORD: "'{{lookup('env', 'DOCKER_PASSWORD')}}'"
-    DOCKER_USERNAME: "'{{lookup('env', 'DOCKER_USERNAME')}}'"
-    DOCKER_REPOSITORY: "'{{lookup('env', 'DOCKER_REPOSITORY')}}'"
+    POSTGRES_HOST: "{{lookup('env', 'ANS_POSTGRES_HOST')}}"
+    POSTGRES_DATABASE: "{{lookup('env', 'ANS_POSTGRES_DATABASE')}}"
+    POSTGRES_USER: "{{lookup('env', 'ANS_POSTGRES_USER')}}"
+    POSTGRES_PW: "{{lookup('env', 'ANS_POSTGRES_PW')}}"
+    POSTGRES_PORT: "{{lookup('env', 'ANS_POSTGRES_PORT')}}"
+    BACKEND_PORT: "{{lookup('env', 'BACKEND_PORT')}}"
+    DOCKER_PASSWORD: "{{lookup('env', 'DOCKER_PASSWORD')}}"
+    DOCKER_USERNAME: "{{lookup('env', 'DOCKER_USERNAME')}}"
+    DOCKER_REPOSITORY: "{{lookup('env', 'DOCKER_REPOSITORY)}}'"
+    MARKETSTACK_APIKEY: "{{lookup('env', 'MARKETSTACK_APIKEY)}}'"
 
   tasks:
     - name: Database running?
@@ -67,6 +68,6 @@
         env:
           POSTGRES_PASSWORD: '{{ POSTGRES_PW }}'
           POSTGRES_USER: '{{ POSTGRES_USER }}'
-          POSTGRES_DB: '{{ POSTGRES_DB }}'
+          POSTGRES_DB: '{{ POSTGRES_DATABASE }}'
           POSTGRES_HOST: '{{ POSTGRES_HOST }}'
           POSTGRES_DATABASE: '{{ POSTGRES_DB }}'

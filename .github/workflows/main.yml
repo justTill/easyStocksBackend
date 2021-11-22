@@ -40,6 +40,7 @@ jobs:
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
       - name: Unit Test Results
+        if: always()
         run: cat ./build/reports/tests/test/index.html
       - name: Upload Artifact
         uses: actions/upload-artifact@master

@@ -2,12 +2,12 @@
   "databaseChangeLog": [
     {
       "changeSet": {
-        "id": "1",
-        "author": "tillpilarczyk",
+        "id": "createTableStocks",
+        "author": "sabrinacielas",
         "changes": [
           {
             "createTable": {
-              "tableName": "model",
+              "tableName": "sectors",
               "columns": [
                 {
                   "column": {
@@ -16,7 +16,53 @@
                     "autoIncrement": true,
                     "constraints": {
                       "primaryKey": true,
+                      "primaryKeyName": "pk_id"
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "sectorID",
+                    "type": "int",
+                    "constraints": {
+                      "nullable": false,
+                      "unique": true
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "nameEN",
+                    "type": "varchar(255)",
+                    "constraints": {
                       "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "nameDE",
+                    "type": "varchar(255)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "createTable": {
+              "tableName": "stocks",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "int",
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "primaryKeyName": "pk_id"
                     }
                   }
                 },
@@ -26,6 +72,27 @@
                     "type": "varchar(255)",
                     "constraints": {
                       "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "symbol",
+                    "type": "varchar(255)",
+                    "constraints": {
+                      "nullable": false,
+                      "unique": true
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "sectorID",
+                    "type": "int",
+                    "constraints": {
+                      "nullable": false,
+                      "foreignKeyName": "fk_sector_stocks",
+                      "references": "sectors(\"sectorID\")"
                     }
                   }
                 }

@@ -2,10 +2,10 @@ package com.mobsys.easyStocks.controller;
 
 import java.util.List;
 
-import com.mobsys.easyStocks.marketstack.MarketStackApi;
+import com.mobsys.alphavantage.model.DailyDataResponse;
+import com.mobsys.easyStocks.alphavantage.AlphavantageApi;
 import com.mobsys.easyStocks.persistence.model.DemoModel;
 import com.mobsys.easyStocks.persistence.repository.DemoRepository;
-import com.mobsys.marketstack.model.EndOfDay;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,16 +18,16 @@ public class DemoController {
     @Autowired
     private DemoRepository demoRepository;
     @Autowired
-    private MarketStackApi api;
+    private AlphavantageApi api;
 
     @GetMapping("/demomodel")
     public List<DemoModel> getDemoModel() {
         return demoRepository.findAll();
     }
 
-    @GetMapping("/marketstack")
+    @GetMapping("/alphavantage")
     @ResponseBody
-    public EndOfDay getEOD(@RequestParam("symbol") String symbol) {
-        return api.eodGet(List.of(symbol), null, null, null, null, null, null).block();
+    public DailyDataResponse getAlphavantageQuery(@RequestParam("symbol") String symbol) {
+        return api.getDailyData(symbol, null, null).block();
     }
 }

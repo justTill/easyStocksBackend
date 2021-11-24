@@ -36,11 +36,11 @@ sourceSets {
 }
 openApiGenerate {
 	generatorName = "java"
-	inputSpec = "$rootDir/api/marketstack-openapi.yml".toString()
+	inputSpec = "$rootDir/api/alphavantage-openapi.yml".toString()
     outputDir = "$buildDir/generated".toString()
-    apiPackage = "com.mobsys.marketstack.api"
-    invokerPackage = "com.mobsys.marketstack.invoker"
-    modelPackage = "com.mobsys.marketstack.model"
+    apiPackage = "com.mobsys.alphavantage.api"
+    invokerPackage = "com.mobsys.alphavantage.invoker"
+    modelPackage = "com.mobsys.alphavantage.model"
     configOptions = [
         dateLibrary: "java8"
     ]

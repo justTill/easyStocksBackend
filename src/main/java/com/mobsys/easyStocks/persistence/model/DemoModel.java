@@ -16,6 +16,9 @@ public class DemoModel implements Serializable {
     @Column
     private String name;
 
+    @Column
+    private String sector;
+
 
     public Integer getId() {
         return id;
@@ -29,7 +32,17 @@ public class DemoModel implements Serializable {
         return name;
     }
 
+    public String getSector() {
+        return sector;
+    }
+
+
     public void setName(final String name) {
         this.name = name;
+    }
+
+
+    public void setSector(final String sector) {
+        this.sector = sector;
     }
 }

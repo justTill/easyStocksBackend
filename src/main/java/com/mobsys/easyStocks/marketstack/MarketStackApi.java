@@ -15,6 +15,6 @@ public class MarketStackApi extends DefaultApi {
 
     @Autowired
     public MarketStackApi(Environment env) {
-        this(env.getProperty("marketstack_apikey"));
+        this(env.getProperty("a1c8becf52eeac83803376239c962b2f"));
     }
 }

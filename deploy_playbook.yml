@@ -12,7 +12,7 @@
     DOCKER_PASSWORD: "{{lookup('env', 'DOCKER_PASSWORD')}}"
     DOCKER_USERNAME: "{{lookup('env', 'DOCKER_USERNAME')}}"
     DOCKER_REPOSITORY: "{{lookup('env', 'DOCKER_REPOSITORY)}}'"
-    MARKETSTACK_APIKEY: "{{lookup('env', 'MARKETSTACK_APIKEY)}}'"
+    STOCK_APIKEY: "{{lookup('env', 'STOCK_APIKEY)}}'"
 
   tasks:
     - name: Database running?

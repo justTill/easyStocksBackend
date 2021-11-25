@@ -2,12 +2,12 @@
   "databaseChangeLog": [
     {
       "changeSet": {
-        "id": "1",
-        "author": "tillpilarczyk",
+        "id": "createTable",
+        "author": "sabrinacielas",
         "changes": [
           {
             "createTable": {
-              "tableName": "model",
+              "tableName": "sectors",
               "columns": [
                 {
                   "column": {
@@ -16,7 +16,53 @@
                     "autoIncrement": true,
                     "constraints": {
                       "primaryKey": true,
+                      "primaryKeyName": "pk_id_sectors"
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "sector_id",
+                    "type": "int",
+                    "constraints": {
+                      "nullable": false,
+                      "unique": true
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "name_en",
+                    "type": "varchar(255)",
+                    "constraints": {
                       "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "name_de",
+                    "type": "varchar(255)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "createTable": {
+              "tableName": "stocks",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "int",
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "primaryKeyName": "pk_id_stocks"
                     }
                   }
                 },
@@ -28,8 +74,87 @@
                       "nullable": false
                     }
                   }
+                },
+                {
+                  "column": {
+                    "name": "symbol",
+                    "type": "varchar(255)",
+                    "constraints": {
+                      "nullable": false,
+                      "unique": true
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "sector_id",
+                    "type": "int",
+                    "constraints": {
+                      "nullable": false,
+                      "foreignKeyName": "fk_sector_stocks",
+                      "references": "sectors(\"sector_id\")"
+                    }
+                  }
                 }
               ]
+            }
+          },
+          {
+            "createTable": {
+              "tableName": "stocks_data",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "int",
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "primaryKeyName": "pk_id_stocksData"
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "symbol",
+                    "type": "varchar(255)",
+                    "constraints": {
+                      "nullable": false,
+                      "unique": true,
+                      "foreignKeyName": "fk_stocksData_stocks",
+                      "references": "stocks(\"symbol\")"
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "adjusted_close",
+                    "type": "decimal",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "date",
+                    "type": "date",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "sqlFile": {
+              "comment": "initialInsert",
+              "endDelimiter": "GO",
+              "splitStatements": true,
+              "relativeToChangelogFile": "true",
+              "path": "./initial-insert.sql",
+              "stripComments": true
             }
           }
         ]

@@ -120,7 +120,6 @@
                     "type": "varchar(255)",
                     "constraints": {
                       "nullable": false,
-                      "unique": true,
                       "foreignKeyName": "fk_stocksData_stocks",
                       "references": "stocks(\"symbol\")"
                     }

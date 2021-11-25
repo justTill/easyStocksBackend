@@ -16,7 +16,7 @@ env:
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}
-  MARKETSTACK_APIKEY: ${{ secrets.MARKETSTACK_APIKEY }}
+  STOCK_APIKEY: ${{ secrets.STOCK_APIKEY }}
 
 jobs:
   healthcheck:

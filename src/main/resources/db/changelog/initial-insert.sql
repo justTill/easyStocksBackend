@@ -1,4 +1,4 @@
-INSERT INTO public.sectors ("sectorId", "nameEn", "nameDe")
+INSERT INTO public.sectors ("sector_id", "name_en", "name_de")
 VALUES (10, 'Energy', 'Energie'),
        (15, 'Materials', 'Material: Roh- und Grundstoffe'),
        (20, 'Industrials', 'Industriegüter'),
@@ -9,11 +9,11 @@ VALUES (10, 'Energy', 'Energie'),
        (45, 'Information Technology', 'Informationstechnology'),
        (50, 'Communication Services', 'Kommunikationsdienstleistungen'),
        (55, 'Utilities', 'Versorgungsunternehmen');
-INSERT INTO public.sectors ("sectorId", "nameEn", "nameDe")
+INSERT INTO public.sectors ("sector_id", "name_en", "name_de")
 VALUES (60, 'Real Estate', 'Immobilien');
 
 
-INSERT INTO public.stocks ("name", "symbol", "sectorId")
+INSERT INTO public.stocks ("name", "symbol", "sector_id")
 VALUES ('adidas', 'ADS', 25),
        ('Airbus', 'AIR', 20),
        ('Allianz', 'ALV', 40),
@@ -24,7 +24,7 @@ VALUES ('adidas', 'ADS', 25),
        ('Brenntag', 'BNR', 15),
        ('Continental', 'CON', 25),
        ('Covestro', '1COV', 15);
-INSERT INTO public.stocks ("name", "symbol", "sectorId")
+INSERT INTO public.stocks ("name", "symbol", "sector_id")
 VALUES ('Daimler', 'DAI', 25),
        ('Delivery Hero', 'DHER', 30),
        ('Deutsche Bank', 'DBK', 40),
@@ -35,7 +35,7 @@ VALUES ('Daimler', 'DAI', 25),
        ('Fresenius', 'FRE', 35),
        ('Fresenius Medical Care', 'FME', 35),
        ('HeidelbergCement', 'HEI', 15);
-INSERT INTO public.stocks ("name", "symbol", "sectorId")
+INSERT INTO public.stocks ("name", "symbol", "sector_id")
 VALUES ('HelloFresh', 'HFG', 30),
        ('Henkel vz.', 'HEN3', 25),
        ('Infineon', 'IFX', 45),
@@ -46,7 +46,7 @@ VALUES ('HelloFresh', 'HFG', 30),
        ('Porsche', 'PAH3', 25),
        ('PUMA', 'PUM', 25),
        ('QIAGEN', 'QIA', 35);
-INSERT INTO public.stocks ("name", "symbol", "sectorId")
+INSERT INTO public.stocks ("name", "symbol", "sector_id")
 VALUES ('RWE', 'RWE', 55),
        ('SAP', 'SAP', 45),
        ('Sartorius vz.', 'SRT3', 35),

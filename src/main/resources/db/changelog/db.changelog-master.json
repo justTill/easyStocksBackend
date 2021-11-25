@@ -22,7 +22,7 @@
                 },
                 {
                   "column": {
-                    "name": "sectorId",
+                    "name": "sector_id",
                     "type": "int",
                     "constraints": {
                       "nullable": false,
@@ -32,7 +32,7 @@
                 },
                 {
                   "column": {
-                    "name": "nameEn",
+                    "name": "name_en",
                     "type": "varchar(255)",
                     "constraints": {
                       "nullable": false
@@ -41,7 +41,7 @@
                 },
                 {
                   "column": {
-                    "name": "nameDe",
+                    "name": "name_de",
                     "type": "varchar(255)",
                     "constraints": {
                       "nullable": false
@@ -87,12 +87,12 @@
                 },
                 {
                   "column": {
-                    "name": "sectorId",
+                    "name": "sector_id",
                     "type": "int",
                     "constraints": {
                       "nullable": false,
                       "foreignKeyName": "fk_sector_stocks",
-                      "references": "sectors(\"sectorId\")"
+                      "references": "sectors(\"sector_id\")"
                     }
                   }
                 }
@@ -101,7 +101,7 @@
           },
           {
             "createTable": {
-              "tableName": "stocksData",
+              "tableName": "stocks_data",
               "columns": [
                 {
                   "column": {
@@ -128,7 +128,7 @@
                 },
                 {
                   "column": {
-                    "name": "adjustedClose",
+                    "name": "adjusted_close",
                     "type": "decimal",
                     "constraints": {
                       "nullable": false

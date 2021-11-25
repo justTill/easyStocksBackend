@@ -1,0 +1,131 @@
+openapi: "3.0.2"
+info:
+  title: Alphavantage API
+  version: "1.0"
+servers:
+  - url: https://www.alphavantage.co/
+security:
+  - ApiKeyAuth: []
+paths:
+  /query:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/symbol"
+        - $ref: "#/components/parameters/function"
+        - $ref: "#/components/parameters/outputsize"
+        - $ref: "#/components/parameters/datatype"
+      responses:
+        200:
+          $ref: "#/components/responses/DailyDataResponse"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: apikey
+  parameters:
+    symbol:
+      in: query
+      name: symbol
+      example: IBM
+      required: true
+      schema:
+        type: string
+      description: "The name of the equity of your choice. For example: symbol=IBM"
+    outputsize:
+      in: query
+      name: outputsize
+      required: false
+      schema:
+        type: string
+        enum:
+          - "compact"
+          - "full"
+        default: compact
+      description: 'By default, outputsize=compact. Strings compact and full are accepted with the following specifications: compact returns only the latest 100 data points; full returns the full-length time series of 20+ years of historical data. The "compact" option is recommended if you would like to reduce the data size of each API call.'
+    datatype:
+      in: query
+      name: datatype
+      required: false
+      schema:
+        type: string
+        enum:
+          - json
+          - csv
+      description: "By default, datatype=json. Strings json and csv are accepted with the following specifications: json returns the daily time series in JSON format; csv returns the time series as a CSV (comma separated value) file."
+    function:
+      in: query
+      name: function
+      required: false
+      schema:
+        type: string
+        enum:
+          - "TIME_SERIES_DAILY_ADJUSTED"
+      description: "The time series of your choice. In this case, function=TIME_SERIES_DAILY_ADJUSTED"
+  responses:
+    DailyDataResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            title: DailyDataResponse
+            type: object
+            properties:
+              "Meta Data":
+                $ref: "#/components/schemas/MetaData"
+              "Time Series (Daily)":
+                $ref: "#/components/schemas/DailyData"
+  schemas:
+    MetaData:
+      type: object
+      properties:
+        "1. Information":
+          type: string
+          example: "Daily Time Series with Splits and Dividend Events"
+        "2. Symbol":
+          type: string
+          example: "IBM"
+        "3. Last Refreshed":
+          type: string
+          example: "2021-11-23"
+        "4. Output Size":
+          type: string
+          example: "Compact"
+        "5. Time Zone":
+          type: string
+          example: "US/Eastern"
+    DailyData:
+      title: DailyData
+      type: object
+      description: 'Each data point key is in the format "YYYY-MM-DD"'
+      additionalProperties:
+        $ref: "#/components/schemas/DataEntry"
+    DataEntry:
+      title: DataEntry
+      type: object
+      additionalProperties: false
+      properties:
+        "1. open":
+          type: string
+          example: "116.79"
+        "2. high":
+          type: string
+          example: "117.94"
+        "3. low":
+          type: string
+          example: "116.04"
+        "4. close":
+          type: string
+          example: "116.79"
+        "5. adjusted close":
+          type: string
+          example: "116.79"
+        "6. volume":
+          type: string
+          example: "4914995"
+        "7. dividend amount":
+          type: string
+          example: "0.0000"
+        "8. split coefficient":
+          type: string
+          example: "1.0"

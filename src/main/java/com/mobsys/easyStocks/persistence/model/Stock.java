@@ -18,19 +18,19 @@ public class Stock implements Serializable {
     @Column
     private String symbol;
 
-    @OneToMany
-    @JoinColumn(name="sectorId")
+    @ManyToOne
+    @JoinColumn(name = "sectorId")
     private Sector sector;
 
-    @ManyToOne
-    @JoinColumn(name="symbol")
+    @OneToMany
+    @JoinColumn(name = "symbol")
     private List<StockData> data;
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -38,7 +38,7 @@ public class Stock implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -46,7 +46,7 @@ public class Stock implements Serializable {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
+    public void setSymbol(final String symbol) {
         this.symbol = symbol;
     }
 
@@ -54,7 +54,7 @@ public class Stock implements Serializable {
         return sector;
     }
 
-    public void setSector(Sector sectorId) {
+    public void setSector(final Sector sectorId) {
         this.sector = sector;
     }
 }

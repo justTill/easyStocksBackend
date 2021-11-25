@@ -2,6 +2,7 @@ package com.mobsys.easyStocks.persistence.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name="stocks")
@@ -17,8 +18,13 @@ public class Stock implements Serializable {
     @Column
     private String symbol;
 
-    @Column
-    private Integer sectorId;
+    @OneToMany
+    @JoinColumn(name="sectorId")
+    private Sector sector;
+
+    @ManyToOne
+    @JoinColumn(name="symbol")
+    private List<StockData> data;
 
     public Integer getId() {
         return id;
@@ -44,11 +50,11 @@ public class Stock implements Serializable {
         this.symbol = symbol;
     }
 
-    public Integer getSectorId() {
-        return sectorId;
+    public Sector getSector() {
+        return sector;
     }
 
-    public void setSectorId(Integer sectorId) {
-        this.sectorId = sectorId;
+    public void setSector(Sector sectorId) {
+        this.sector = sector;
     }
 }

@@ -99,30 +99,33 @@ components:
       type: object
       description: 'Each data point key is in the format "YYYY-MM-DD"'
       additionalProperties:
-        type: object
-        additionalProperties: false
-        properties:
-          "1. open":
-            type: string
-            example: "116.79"
-          "2. high":
-            type: string
-            example: "117.94"
-          "3. low":
-            type: string
-            example: "116.04"
-          "4. close":
-            type: string
-            example: "116.79"
-          "5. adjusted close":
-            type: string
-            example: "116.79"
-          "6. volume":
-            type: string
-            example: "4914995"
-          "7. dividend amount":
-            type: string
-            example: "0.0000"
-          "8. split coefficient":
-            type: string
-            example: "1.0"
+        $ref: "#/components/schemas/DataEntry"
+    DataEntry:
+      title: DataEntry
+      type: object
+      additionalProperties: false
+      properties:
+        "1. open":
+          type: string
+          example: "116.79"
+        "2. high":
+          type: string
+          example: "117.94"
+        "3. low":
+          type: string
+          example: "116.04"
+        "4. close":
+          type: string
+          example: "116.79"
+        "5. adjusted close":
+          type: string
+          example: "116.79"
+        "6. volume":
+          type: string
+          example: "4914995"
+        "7. dividend amount":
+          type: string
+          example: "0.0000"
+        "8. split coefficient":
+          type: string
+          example: "1.0"

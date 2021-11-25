@@ -18,12 +18,12 @@ public class Stock implements Serializable {
     @Column
     private String symbol;
 
-    @ManyToOne
-    @JoinColumn(name = "sectorId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sectorId", referencedColumnName = "sectorId")
     private Sector sector;
 
-    @OneToMany
-    @JoinColumn(name = "symbol")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "symbol", referencedColumnName = "symbol")
     private List<StockData> data;
 
     public Integer getId() {
@@ -56,5 +56,13 @@ public class Stock implements Serializable {
 
     public void setSector(final Sector sectorId) {
         this.sector = sector;
+    }
+
+    public List<StockData> getData() {
+        return data;
+    }
+
+    public void setData(final List<StockData> data) {
+        this.data = data;
     }
 }

@@ -24,7 +24,7 @@ public class Sector implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -32,7 +32,7 @@ public class Sector implements Serializable {
         return sectorId;
     }
 
-    public void setSectorId(Integer sectorId) {
+    public void setSectorId(final Integer sectorId) {
         this.sectorId = sectorId;
     }
 
@@ -40,7 +40,7 @@ public class Sector implements Serializable {
         return nameEn;
     }
 
-    public void setNameEn(String nameEn) {
+    public void setNameEn(final String nameEn) {
         this.nameEn = nameEn;
     }
 
@@ -48,7 +48,7 @@ public class Sector implements Serializable {
         return nameDe;
     }
 
-    public void setNameDe(String nameDe) {
+    public void setNameDe(final String nameDe) {
         this.nameDe = nameDe;
     }
 }

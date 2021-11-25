@@ -1,6 +1,11 @@
 # Compiled class file
 *.class
 
+# IDE
+.project
+.classpath
+.settings
+
 # Log file
 *.log
 
@@ -25,5 +30,6 @@ hs_err_pid*
 .idea
 .gradle
 build
+bin
 #private application-properties
 src/main/resources/application-*.properties

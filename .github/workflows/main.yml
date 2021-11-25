@@ -7,6 +7,7 @@ env:
   POSTGRES_DATABASE: easystocks
   POSTGRES_USER: postgres
   POSTGRES_PW: postgres
+  MARKETSTACK_APIKEY: ${{ secrets.MARKETSTACK_APIKEY }}
 
 jobs:
   healthcheck:
@@ -30,8 +31,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "11"
       - name: Build with gradle
         run: gradle wrapper && ./gradlew build
       - name: Upload Artifact

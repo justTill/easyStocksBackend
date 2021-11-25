@@ -11,9 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -36,6 +38,14 @@ public class StockUpdateService {
 
     private static final Logger logger = LoggerFactory.getLogger(StockUpdateService.class);
 
+    @Bean
+    public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
+        final ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setPoolSize(2);
+        threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
+        return threadPoolTaskScheduler;
+    }
+
     @EventListener(ApplicationReadyEvent.class)
     public void checkExistingHistory() {
         logger.info("Checking existing stock data history");
@@ -47,6 +57,7 @@ public class StockUpdateService {
             logger.info("Stock data exist, no need to initial fetch");
         }
     }
+
 
     @Scheduled(cron = "0 30 23 * * *", zone = "EST")
     public final void updateDailyStockData() {

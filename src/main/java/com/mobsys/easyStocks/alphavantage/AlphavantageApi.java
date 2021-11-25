@@ -54,7 +54,7 @@ public class AlphavantageApi extends DefaultApi {
             }
             try {
                 waitCount++;
-                logger.debug("Quota limit reached, waiting 10 seconds");
+                logger.info("Quota limit reached, waiting 10 seconds");
                 TimeUnit.SECONDS.sleep(10);
             } catch (final InterruptedException e) {
                 e.printStackTrace();
@@ -62,14 +62,14 @@ public class AlphavantageApi extends DefaultApi {
         }
         waitCount = 0;
         minuteQuotaCounter++;
-        logger.debug("Quota remaining: {}", MAX_MINUTE_QUOTA - minuteQuotaCounter);
+        logger.info("Quota remaining: {}", MAX_MINUTE_QUOTA - minuteQuotaCounter);
     }
 
     /**
      * This is run async
      */
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.MINUTES)
-    private void resetCounter() {
+    void resetCounter() {
         if (minuteQuotaCounter > 0) {
             minuteQuotaCounter = 0;
         }

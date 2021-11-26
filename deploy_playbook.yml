@@ -57,13 +57,13 @@
 
     - name: Login In Docker Registry
       community.docker.docker_login:
-        username: '{{DOCKER_USERNAME}}'
-        password: '{{DOCKER_PASSWORD}}'
+        username: '{{ DOCKER_USERNAME }}'
+        password: '{{ DOCKER_PASSWORD }}'
 
     - name: Start Backend
       docker_container:
         name: easystocksbackend
-        image: '{{DOCKER_REPOSITORY}}'
+        image: '{{ DOCKER_REPOSITORY }}'
         ports:
           - '{{ BACKEND_PORT }}'
         restart: yes

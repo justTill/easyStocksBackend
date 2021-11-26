@@ -15,15 +15,15 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class AlphavantageApi extends DefaultApi {
     private final Logger logger = LoggerFactory.getLogger(AlphavantageApi.class);
-    //TODO: use Atomic Integer
-    private int minuteQuotaCounter = 0;
+    private final AtomicInteger minuteQuotaCounter = new AtomicInteger(0);
     private final int MAX_MINUTE_QUOTA = 5;
 
-    private int waitCount = 0;
+    private final AtomicInteger waitCount = new AtomicInteger();
     private final int MAX_WAIT_COUNT = 10;
 
     private AlphavantageApi(final String apiKey) {
@@ -47,22 +47,22 @@ public class AlphavantageApi extends DefaultApi {
     }
 
     private void checkQuotaLimitSync() {
-        while (minuteQuotaCounter > MAX_MINUTE_QUOTA) { // we only have 5 Calls/min but with >= we will make 6
-            if (waitCount >= MAX_WAIT_COUNT) {
+        while (minuteQuotaCounter.get() > MAX_MINUTE_QUOTA) { // we only have 5 Calls/min but with >= we will make 6
+            if (waitCount.get() >= MAX_WAIT_COUNT) {
                 throw new WebClientResponseException("Max wait count for quota reached. Will not retry.",
                         HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
             }
             try {
-                waitCount++;
+                waitCount.incrementAndGet();
                 logger.info("Quota limit reached, waiting 10 seconds");
                 TimeUnit.SECONDS.sleep(10);
             } catch (final InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        waitCount = 0;
-        minuteQuotaCounter++;
-        logger.info("Quota remaining: {}", MAX_MINUTE_QUOTA - minuteQuotaCounter);
+        waitCount.set(0);
+        minuteQuotaCounter.incrementAndGet();
+        logger.info("Quota remaining: {}", MAX_MINUTE_QUOTA - minuteQuotaCounter.get());
     }
 
     /**
@@ -70,8 +70,8 @@ public class AlphavantageApi extends DefaultApi {
      */
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.MINUTES)
     void resetCounter() {
-        if (minuteQuotaCounter > 0) {
-            minuteQuotaCounter = 0;
+        if (minuteQuotaCounter.get() > 0) {
+            minuteQuotaCounter.set(0);
         }
     }
 }

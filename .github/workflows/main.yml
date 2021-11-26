@@ -35,9 +35,13 @@ jobs:
         run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
       - uses: actions/checkout@v2
       - name: Run Ansible Playbook
-        uses: RvuvuzelaM/ansible-cli-github-action@1
+        uses: dawidd6/action-ansible-playbook@v2.5.0
         with:
-          command: "ansible-playbook deploy_playbook.yml"
+          playbook: deploy_playbook.yml
+          directory: ./
+          inventory: |
+            [webservers]
+            h2899527.stratoserver.net ansible_port=2220 ansible_user=msbackend
   healthcheck:
     runs-on: ubuntu-latest
     services:
@@ -100,9 +104,3 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
       - uses: actions/checkout@v2
-      - name: Play Ansible Playbook
-        uses: roles-ansible/check-ansible-ubuntu-latest-action@master
-        with:
-          targets: deploy_playbook.yaml
-      #- name: Run Ansible Playbook
-      #  run: ansible-playbook ./deploy_playbook.yaml

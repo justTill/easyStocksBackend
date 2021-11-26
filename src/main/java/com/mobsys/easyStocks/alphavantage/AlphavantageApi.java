@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class AlphavantageApi extends DefaultApi {
     private final Logger logger = LoggerFactory.getLogger(AlphavantageApi.class);
-
+    //TODO: use Atomic Integer
     private int minuteQuotaCounter = 0;
     private final int MAX_MINUTE_QUOTA = 5;
 

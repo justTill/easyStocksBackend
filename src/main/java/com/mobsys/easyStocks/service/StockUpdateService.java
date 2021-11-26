@@ -49,7 +49,7 @@ public class StockUpdateService {
     @EventListener(ApplicationReadyEvent.class)
     public void checkExistingHistory() {
         logger.info("Checking existing stock data history");
-        final long stocksDataRowCount = stockDataRepository.count();
+        final long stocksDataRowCount = stockDataRepository.count(); // TODO: count per Symbol
         if (stocksDataRowCount == 0) {
             logger.info("No stock data history found, starting update");
             saveDailyStocksData(true);
@@ -73,7 +73,7 @@ public class StockUpdateService {
             try {
                 final var mappedStockData = getMappedDailyStockData(stock, outputSize);
                 if (!mappedStockData.isEmpty()) {
-                    stockDataRepository.saveAll(mappedStockData);
+                    stockDataRepository.saveAll(mappedStockData); // TODO: save single until first exception occurs
                 }
             } catch (final DuplicateKeyException e) {
                 // We ignore this error

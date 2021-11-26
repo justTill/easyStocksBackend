@@ -73,10 +73,9 @@ public class StockUpdateService {
             try {
                 final var mappedStockData = getMappedDailyStockData(stock, outputSize);
                 if (!mappedStockData.isEmpty()) {
-                    stockDataRepository.saveAll(mappedStockData); // TODO: save single until first exception occurs
+                    mappedStockData.forEach(stockDataRepository::save);
                 }
             } catch (final DuplicateKeyException e) {
-                // We ignore this error
                 logger.warn("Duplicate key exception for {}", stock.getSymbol());
             }
         });

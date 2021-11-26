@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class StockUpdateService {
+
+    private final String UNIQUECONTRAINT = "stock-date-unique-constraint";
     @Autowired
     private AlphavantageApi api;
 
@@ -59,7 +61,8 @@ public class StockUpdateService {
     }
 
 
-    @Scheduled(cron = "0 30 23 * * *", zone = "EST")
+    //@Scheduled(cron = "0 30 23 * * *", zone = "EST")
+    @Scheduled(cron = "0 38 9 * * *", zone = "EST")
     public final void updateDailyStockData() {
         logger.info("Start getting Daily Stock Data");
         saveDailyStocksData(false);
@@ -75,8 +78,11 @@ public class StockUpdateService {
                 if (!mappedStockData.isEmpty()) {
                     mappedStockData.forEach(stockDataRepository::save);
                 }
-            } catch (final DuplicateKeyException e) {
-                logger.warn("Duplicate key exception for {}", stock.getSymbol());
+            } catch (final DataIntegrityViolationException e) {
+                if (e.getMessage() == null || !e.getMessage().contains(UNIQUECONTRAINT)) {
+                    throw e;
+                }
+                logger.warn("Stock data for current date and symbol already exits so -> do not save");
             }
         });
 

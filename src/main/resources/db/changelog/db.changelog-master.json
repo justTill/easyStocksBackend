@@ -158,6 +158,22 @@
           }
         ]
       }
+    },
+    {
+      "changeSet": {
+        "id": "addUniqueConstraint for stock-data",
+        "author": "till pilarczyk",
+        "changes": [
+          {
+            "addUniqueConstraint": {
+              "columnNames": "symbol, date",
+              "constraintName": "stock-date-unique-constraint",
+              "schemaName": "public",
+              "tableName": "stocks_data"
+            }
+          }
+        ]
+      }
     }
   ]
 }

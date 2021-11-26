@@ -10,7 +10,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
@@ -38,8 +37,7 @@ public class AlphavantageApi extends DefaultApi {
         this(env.getProperty("stock_apikey"));
     }
 
-    public Mono<DailyDataResponse> getDailyData(final String symbol, final String outputSize, final String datatype)
-            throws WebClientResponseException {
+    public Mono<DailyDataResponse> getDailyData(final String symbol, final String outputSize, final String datatype) {
         logger.info("Getting data for {}...", symbol);
         checkQuotaLimitSync();
         return queryGet(symbol, "TIME_SERIES_DAILY_ADJUSTED", outputSize, datatype);
@@ -49,6 +47,7 @@ public class AlphavantageApi extends DefaultApi {
         while (minuteQuotaCounter.get() >= MAX_MINUTE_QUOTA) {
             if (waitCount.get() >= MAX_WAIT_COUNT) {
                 logger.error("Max wait count for quota reached. Will not retry.");
+                waitCount.set(0);
                 return;
             }
             try {

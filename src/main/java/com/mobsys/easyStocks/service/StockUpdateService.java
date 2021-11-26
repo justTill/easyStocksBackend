@@ -49,7 +49,7 @@ public class StockUpdateService {
     @EventListener(ApplicationReadyEvent.class)
     public void checkExistingHistory() {
         logger.info("Checking existing stock data history");
-        final long stocksDataRowCount = stockDataRepository.count(); // TODO: count per Symbol
+        final long stocksDataRowCount = stockDataRepository.count();
         if (stocksDataRowCount == 0) {
             logger.info("No stock data history found, starting update");
             saveDailyStocksData(true);

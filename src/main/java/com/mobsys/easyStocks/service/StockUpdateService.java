@@ -61,8 +61,7 @@ public class StockUpdateService {
     }
 
 
-    //@Scheduled(cron = "0 30 23 * * *", zone = "EST")
-    @Scheduled(cron = "0 38 9 * * *", zone = "EST")
+    @Scheduled(cron = "0 30 23 * * *", zone = "EST")
     public final void updateDailyStockData() {
         logger.info("Start getting Daily Stock Data");
         saveDailyStocksData(false);

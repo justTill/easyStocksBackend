@@ -120,7 +120,6 @@
                     "type": "varchar(255)",
                     "constraints": {
                       "nullable": false,
-                      "unique": true,
                       "foreignKeyName": "fk_stocksData_stocks",
                       "references": "stocks(\"symbol\")"
                     }
@@ -155,6 +154,22 @@
               "relativeToChangelogFile": "true",
               "path": "./initial-insert.sql",
               "stripComments": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "changeSet": {
+        "id": "addUniqueConstraint for stock-data",
+        "author": "till pilarczyk",
+        "changes": [
+          {
+            "addUniqueConstraint": {
+              "columnNames": "symbol, date",
+              "constraintName": "stock-date-unique-constraint",
+              "schemaName": "public",
+              "tableName": "stocks_data"
             }
           }
         ]

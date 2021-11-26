@@ -5,11 +5,11 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name="stocks")
+@Table(name = "stocks")
 public class Stock implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column

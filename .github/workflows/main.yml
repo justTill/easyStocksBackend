@@ -86,7 +86,7 @@ jobs:
       - name: Play Ansible Playbook
         uses: arillso/action.playbook@master
         with:
-          playbook: deploy_playbook.yaml
+          playbook: ./deploy_playbook.yaml
           inventory: deploy.ini
       - name: Run Ansible Playbook
         run: ansible-playbook ./deploy_playbook.yaml

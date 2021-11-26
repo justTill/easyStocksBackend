@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,7 +23,7 @@ public class AlphavantageApi extends DefaultApi {
     private final int MAX_MINUTE_QUOTA = 5;
 
     private final AtomicInteger waitCount = new AtomicInteger();
-    private final int MAX_WAIT_COUNT = 10;
+    private final int MAX_WAIT_COUNT = 13;
 
     private AlphavantageApi(final String apiKey) {
         super();
@@ -49,8 +48,8 @@ public class AlphavantageApi extends DefaultApi {
     private void checkQuotaLimitSync() {
         while (minuteQuotaCounter.get() >= MAX_MINUTE_QUOTA) {
             if (waitCount.get() >= MAX_WAIT_COUNT) {
-                throw new WebClientResponseException("Max wait count for quota reached. Will not retry.",
-                        HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+                logger.error("Max wait count for quota reached. Will not retry.");
+                return;
             }
             try {
                 waitCount.incrementAndGet();

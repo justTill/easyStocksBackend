@@ -47,7 +47,7 @@ public class AlphavantageApi extends DefaultApi {
     }
 
     private void checkQuotaLimitSync() {
-        while (minuteQuotaCounter.get() > MAX_MINUTE_QUOTA) { // we only have 5 Calls/min but with >= we will make 6
+        while (minuteQuotaCounter.get() >= MAX_MINUTE_QUOTA) {
             if (waitCount.get() >= MAX_WAIT_COUNT) {
                 throw new WebClientResponseException("Max wait count for quota reached. Will not retry.",
                         HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);

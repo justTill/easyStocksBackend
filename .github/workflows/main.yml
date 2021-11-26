@@ -86,4 +86,4 @@ jobs:
       - name: ll
         run: ls -l -a
       - name: Run Ansible Playbook
-        run: ansible-playbook deploy_playbook.yaml
+        run: ansible-playbook ./deploy_playbook.yaml

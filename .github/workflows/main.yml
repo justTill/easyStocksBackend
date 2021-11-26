@@ -36,7 +36,7 @@ jobs:
       - name: Play Ansible Playbook
         uses: roles-ansible/check-ansible-ubuntu-latest-action@master
         with:
-          targets: deploy_playbook.yaml
+          targets: /github/workspace/deploy_playbook.yaml
   healthcheck:
     runs-on: ubuntu-latest
     services:

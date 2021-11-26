@@ -21,6 +21,22 @@ env:
   ANS_INIT_HISTORY: ${{ secrets.ANS_INIT_HISTORY }}
 
 jobs:
+  depltestoy:
+    runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
+      - uses: actions/checkout@v2
+      - name: Play Ansible Playbook
+        uses: roles-ansible/check-ansible-ubuntu-latest-action@master
+        with:
+          targets: deploy_playbook.yaml
   healthcheck:
     runs-on: ubuntu-latest
     services:
@@ -86,6 +102,6 @@ jobs:
       - name: Play Ansible Playbook
         uses: roles-ansible/check-ansible-ubuntu-latest-action@master
         with:
-          targets: ./deploy_playbook.yaml
-      - name: Run Ansible Playbook
-        run: ansible-playbook ./deploy_playbook.yaml
+          targets: deploy_playbook.yaml
+      #- name: Run Ansible Playbook
+      #  run: ansible-playbook ./deploy_playbook.yaml

@@ -33,7 +33,8 @@ jobs:
           known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
       - name: Adding Known Hosts
         run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
-      - uses: actions/checkout@v2
+      - name: Run Ansible Playbook
+        run: ls -l -a /home/runner/.ssh
       - name: Run Ansible Playbook
         uses: dawidd6/action-ansible-playbook@v2.5.0
         with:

@@ -36,7 +36,7 @@ jobs:
       - name: Play Ansible Playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: deploy_playbook.yaml
+          playbook: ./deploy_playbook.yaml
           inventory: deploy.ini
   healthcheck:
     runs-on: ubuntu-latest

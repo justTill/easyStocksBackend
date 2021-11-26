@@ -40,7 +40,7 @@ jobs:
         with:
           playbook: deploy_playbook.yml
           directory: ./
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          #key: ${{ secrets.SSH_PRIVATE_KEY }}
           inventory: |
             [webservers]
             h2899527.stratoserver.net ansible_port=2220 ansible_user=msbackend

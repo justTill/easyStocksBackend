@@ -38,7 +38,6 @@ jobs:
         uses: ansible/ansible-lint-action@master
         with:
           targets: ./deploy_playbook.yml
-          option: -p 2220
   healthcheck:
     runs-on: ubuntu-latest
     services:

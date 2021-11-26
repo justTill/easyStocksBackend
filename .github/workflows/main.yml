@@ -83,4 +83,4 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
       - name: Run Ansible Playbook
-        run: ansible-playbook deploy_playbook.yaml
+        run: ansible-playbook ./deploy_playbook.yaml

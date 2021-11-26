@@ -17,6 +17,8 @@ env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}
   STOCK_APIKEY: ${{ secrets.STOCK_APIKEY }}
+  INIT_HISTORY: ${{ secrets.INIT_HISTORY }}
+  ANS_INIT_HISTORY: ${{ secrets.ANS_INIT_HISTORY }}
 
 jobs:
   healthcheck:

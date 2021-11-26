@@ -14,6 +14,7 @@
     DOCKER_USERNAME: "{{lookup('env', 'DOCKER_USERNAME')}}"
     DOCKER_REPOSITORY: "{{lookup('env', 'DOCKER_REPOSITORY)}}'"
     STOCK_APIKEY: "{{lookup('env', 'STOCK_APIKEY)}}'"
+    INIT_HISTORY: "{{lookup('env', 'ANS_INIT_HISTORY)}}'"
 
   tasks:
     - name: Database running?

@@ -35,7 +35,7 @@ jobs:
         run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
       - uses: actions/checkout@v2
       - name: Run Ansible Playbook
-        uses: tomasnorre/ansible-cli-action@0.0.5
+        uses: actions/ansible-cli-action@latest
         with:
           command: "ansible-playbook deploy_playbook.yml"
   healthcheck:

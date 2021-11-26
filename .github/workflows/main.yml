@@ -51,7 +51,7 @@ jobs:
         with:
           name: easy-stocks
           path: ./build/libs/easy-stocks-0.0.1.jar
-        if: github.ref == 'refs/heads/master'
+        #if: github.ref == 'refs/heads/master'
 
   buildAndPush:
     needs: healthcheck

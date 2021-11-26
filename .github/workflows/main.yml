@@ -81,6 +81,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
       - name: Adding Known Hosts
-        run: ssh-keyscan -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
+        run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
       - name: Run Ansible Playbook
         run: ansible-playbook deploy_playbook.yaml

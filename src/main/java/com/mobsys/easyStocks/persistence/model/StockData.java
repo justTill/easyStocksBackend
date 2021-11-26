@@ -8,7 +8,7 @@ import java.util.Date;
 public class StockData {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column

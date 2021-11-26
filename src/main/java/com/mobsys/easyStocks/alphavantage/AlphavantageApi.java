@@ -47,8 +47,7 @@ public class AlphavantageApi extends DefaultApi {
         while (minuteQuotaCounter.get() >= MAX_MINUTE_QUOTA) {
             if (waitCount.get() >= MAX_WAIT_COUNT) {
                 logger.error("Max wait count for quota reached. Will not retry.");
-                waitCount.set(0);
-                return;
+                break;
             }
             try {
                 waitCount.incrementAndGet();

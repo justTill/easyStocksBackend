@@ -5,7 +5,7 @@
   vars:
     ANSIBLE_PYTHON_INTERPRETER: /usr/bin/python3.8
     POSTGRES_HOST: "{{ lookup('env', 'ANS_POSTGRES_HOST') }}"
-    POSTGRES_DATABASE: "{{ lookup('env', 'ANS_POSTGRES_DATABASE' )}}"
+    POSTGRES_DATABASE: "{{ lookup('env', 'ANS_POSTGRES_DATABASE') }}"
     POSTGRES_USER: "{{ lookup('env', 'ANS_POSTGRES_USER') }}"
     POSTGRES_PW: "{{ lookup('env', 'ANS_POSTGRES_PW') }}"
     POSTGRES_PORT: "{{ lookup('env', 'ANS_POSTGRES_PORT') }}"

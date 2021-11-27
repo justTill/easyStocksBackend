@@ -62,9 +62,10 @@ jobs:
       - uses: actions/download-artifact@master
         with:
           name: easy-stocks
-          path: ./build/libs/easy-stocks-0.0.1.jar
+      - name:
+        run: ls
       - name: Build Image
-        run: docker build --build-arg JAR_FILE=build/libs/\*jar -t ${{ secrets.DOCKER_REPOSITORY }} .
+        run: docker build --build-arg JAR_FILE=./easy-stocks-0.0.1.jar -t ${{ secrets.DOCKER_REPOSITORY }} .
       - name: Log into registry
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Push Image

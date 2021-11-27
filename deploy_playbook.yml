@@ -70,6 +70,7 @@
         env:
           POSTGRES_PASSWORD: '{{ POSTGRES_PW }}'
           POSTGRES_USER: '{{ POSTGRES_USER }}'
-          POSTGRES_DB: '{{ POSTGRES_DATABASE }}'
           POSTGRES_HOST: '{{ POSTGRES_HOST }}'
           POSTGRES_DATABASE: '{{ POSTGRES_DATABASE }}'
+          STOCK_APIKEY: '{{ STOCK_APIKEY }}'
+          INIT_HISTORY: '{{ INIT_HISTORY }}'

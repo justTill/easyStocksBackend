@@ -21,29 +21,6 @@ env:
   ANS_INIT_HISTORY: ${{ secrets.ANS_INIT_HISTORY }}
 
 jobs:
-  depltestoy:
-    runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-      - name: Adding Known Hosts
-        run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
-      - name: Run Ansible Playbook
-        run: ls -l -a /home/runner/.ssh
-      - name: Run Ansible Playbook
-        uses: dawidd6/action-ansible-playbook@v2.5.0
-        with:
-          playbook: deploy_playbook.yml
-          directory: ./
-          # key: ${{ secrets.SSH_PRIVATE_KEY }}
-          inventory: |
-            [webservers]
-            h2899527.stratoserver.net ansible_port=2220 ansible_user=msbackend
   healthcheck:
     runs-on: ubuntu-latest
     services:
@@ -98,6 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     # if: github.ref == 'refs/heads/master'
     steps:
+      - uses: actions/checkout@v2
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -105,4 +83,13 @@ jobs:
           known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
       - name: Adding Known Hosts
         run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
-      - uses: actions/checkout@v2
+      - name: Run Ansible Playbook
+        run: ls -l -a /home/runner/.ssh
+          - name: Run Ansible Playbook
+            uses: dawidd6/action-ansible-playbook@v2.5.0
+            with:
+              playbook: deploy_playbook.yml
+              directory: ./
+              inventory: |
+                [webservers]
+                h2899527.stratoserver.net ansible_port=2220 ansible_user=msbackend

@@ -22,6 +22,11 @@
         name: easystocksdatabase
       register: dbresult
 
+    - name: echo Stuff ?
+      shell: echo '{{ POSTGRES_HOST }}' && echo '{{ POSTGRES_DATABASE }}'
+    - name: echo Stuff ?
+      shell: echo '{{ POSTGRES_PORT }}' && echo '{{ POSTGRES_USER }}'
+
     - name: Remove Database if exited
       shell: docker rm easystocksdatabase
       when: dbresult.exists and dbresult.container['State']['Status'] != "running"

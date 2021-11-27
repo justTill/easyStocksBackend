@@ -24,12 +24,50 @@
 
     - name: Tear down existing Container and Images
       community.docker.docker_compose:
+        project_name: easystocks
         project_src: ./
         state: absent
         remove_images: all
 
     - name: Start Containers (docker-compose-up)
       community.docker.docker_compose:
-        project_src: ./
-        build: no
-        pull: yes
+        project_name: easystocks
+        definition:
+          version: '3'
+          services:
+            backend:
+              restart: always
+              image: justtill/easy-stocks:latest
+              ports:
+                - "8080:8080"
+              container_name: easystocksbackend
+              environment:
+                - POSTGRES_PW={{ POSTGRES_PW }}
+                - POSTGRES_USER={{ POSTGRES_USER }}
+                - POSTGRES_HOST=db
+                - POSTGRES_PORT={{ POSTGRES_PORT }}
+                - POSTGRES_DATABASE={{ POSTGRES_DATABASE }}
+                - STOCK_APIKEY={{ STOCK_APIKEY }}
+                - INIT_HISTORY={{ INIT_HISTORY }}
+              depends_on:
+                - db
+            db:
+              restart: always
+              image: postgres:14.0-alpine
+              container_name: easystocksdb
+              volumes:
+                - postgres_data:/var/lib/postgresql/data/
+              environment:
+                - POSTGRES_PASSWORD={{ POSTGRES_PW }}
+                - POSTGRES_USER={{ POSTGRES_USER }}
+                - POSTGRES_DB={{ POSTGRES_DATABASE }}
+              ports:
+                - 5431:5431
+          volumes:
+            postgres_data:
+
+        #- name: Start Containers (docker-compose-up)
+        # community.docker.docker_compose:
+        #  project_src: ./
+        # build: no
+        #pull: yes

@@ -17,17 +17,22 @@
     DOCKER_REPOSITORY: "{{ lookup('env', 'DOCKER_REPOSITORY') }}"
 
   tasks:
-    - name: Login In Docker Registry
-      community.docker.docker_login:
-        username: '{{ DOCKER_USERNAME }}'
-        password: '{{ DOCKER_PASSWORD }}'
+    - name: Copy composefile
+      ansible.builtin.copy:
+        src: docker-compose.yml
+        dest: /home/msbackend/docker-compose.yml
 
     - name: Tear down existing Container and Images
       community.docker.docker_compose:
         project_name: easystocks
-        project_src: ./
+        project_src: .
         state: absent
         remove_images: all
+
+    - name: Login In Docker Registry
+      community.docker.docker_login:
+        username: '{{ DOCKER_USERNAME }}'
+        password: '{{ DOCKER_PASSWORD }}'
 
     - name: Start Containers (docker-compose-up)
       community.docker.docker_compose:
@@ -65,9 +70,3 @@
                 - "5431:5431"
           volumes:
             postgres_data:
-
-        #- name: Start Containers (docker-compose-up)
-        # community.docker.docker_compose:
-        #  project_src: ./
-        # build: no
-        #pull: yes

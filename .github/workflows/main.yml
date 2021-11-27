@@ -51,12 +51,12 @@ jobs:
         with:
           name: easy-stocks
           path: ./build/libs/easy-stocks-0.0.1.jar
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
 
   buildAndPush:
     needs: healthcheck
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@master
@@ -73,7 +73,7 @@ jobs:
   deploy:
     needs: buildAndPush
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       - name: Install SSH Key

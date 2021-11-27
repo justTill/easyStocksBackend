@@ -71,6 +71,7 @@
           POSTGRES_PW: '{{ POSTGRES_PW }}'
           POSTGRES_USER: '{{ POSTGRES_USER }}'
           POSTGRES_HOST: '{{ POSTGRES_HOST }}'
+          POSTGRES_PORT: '{{ POSTGRES_PORT }}'
           POSTGRES_DATABASE: '{{ POSTGRES_DATABASE }}'
           STOCK_APIKEY: '{{ STOCK_APIKEY }}'
           INIT_HISTORY: '{{ INIT_HISTORY }}'

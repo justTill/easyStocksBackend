@@ -68,7 +68,7 @@
           - '{{ BACKEND_PORT }}'
         restart: yes
         env:
-          POSTGRES_PASSWORD: '{{ POSTGRES_PW }}'
+          POSTGRES_PW: '{{ POSTGRES_PW }}'
           POSTGRES_USER: '{{ POSTGRES_USER }}'
           POSTGRES_HOST: '{{ POSTGRES_HOST }}'
           POSTGRES_DATABASE: '{{ POSTGRES_DATABASE }}'

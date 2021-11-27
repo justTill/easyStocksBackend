@@ -3,11 +3,22 @@ on:
   push:
 env:
   POSTGRES_HOST: localhost
-  POSTGRES_PORT: 5432
   POSTGRES_DATABASE: easystocks
   POSTGRES_USER: postgres
   POSTGRES_PW: postgres
+  POSTGRES_PORT: 5432
+  ANS_POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+  ANS_POSTGRES_DATABASE: ${{ secrets.POSTGRES_DB }}
+  ANS_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+  ANS_POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+  ANS_POSTGRES_PW: ${{ secrets.POSTGRES_PW }}
+  BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}
   STOCK_APIKEY: ${{ secrets.STOCK_APIKEY }}
+  INIT_HISTORY: ${{ secrets.INIT_HISTORY }}
+  ANS_INIT_HISTORY: ${{ secrets.ANS_INIT_HISTORY }}
 
 jobs:
   healthcheck:
@@ -53,21 +64,30 @@ jobs:
           name: easy-stocks
           path: ./build/libs/easy-stocks-0.0.1.jar
       - name: Build Image
-        run: docker build --build-arg JAR_FILE=build/libs/\*jar -t easy-stock-backend .
-      #  needs: healthcheck
-      # runs-on: ubuntu-latest
+        run: docker build --build-arg JAR_FILE=build/libs/\*jar -t ${{ secrets.DOCKER_REPOSITORY }} .
+      - name: Log into registry
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push Image
+        run: docker push ${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      #steps:
-      # - uses: actions/checkout@v2
-      #- name: Log into registry
-      # run: docker login -u ${{ secrets.DOCKERNAME }} -p ${{ secrets.DOCKERPASSWORD }}
-
-      #     - name: Build images
-
-      #    - name: Push image
-      #     if: github.ref == 'refs/heads/master'
-      #    run: |
-      #     DATABASE_NAME=what_meme SQL_USER=what_meme SQL_PASSWORD=what_meme docker-compose -f docker-compose.prod.yml push
-
-    #deployContainer:
-    # needs: buildAndPush
+  deploy:
+    needs: buildAndPush
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
+      - name: Run Ansible Playbook
+        uses: dawidd6/action-ansible-playbook@v2.5.0
+        with:
+          playbook: deploy_playbook.yml
+          directory: ./
+          inventory: |
+            [webservers]
+            h2899527.stratoserver.net ansible_port=2220 ansible_user=msbackend

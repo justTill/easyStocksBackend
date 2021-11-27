@@ -1,0 +1,76 @@
+---
+- name: Update Easy Stocks Application
+  hosts: webservers
+
+  vars:
+    ANSIBLE_PYTHON_INTERPRETER: /usr/bin/python3.8
+    POSTGRES_HOST: "{{ lookup('env', 'ANS_POSTGRES_HOST') }}"
+    POSTGRES_DATABASE: "{{ lookup('env', 'ANS_POSTGRES_DATABASE') }}"
+    POSTGRES_USER: "{{ lookup('env', 'ANS_POSTGRES_USER') }}"
+    POSTGRES_PW: "{{ lookup('env', 'ANS_POSTGRES_PW') }}"
+    POSTGRES_PORT: "{{ lookup('env', 'ANS_POSTGRES_PORT') }}"
+    BACKEND_PORT: "{{ lookup('env', 'BACKEND_PORT') }}"
+    DOCKER_PASSWORD: "{{ lookup('env', 'DOCKER_PASSWORD') }}"
+    DOCKER_USERNAME: "{{ lookup('env', 'DOCKER_USERNAME') }}"
+    DOCKER_REPOSITORY: "{{ lookup('env', 'DOCKER_REPOSITORY') }}"
+    STOCK_APIKEY: "{{ lookup('env', 'STOCK_APIKEY') }}"
+    INIT_HISTORY: "{{ lookup('env', 'ANS_INIT_HISTORY') }}"
+
+  tasks:
+    - name: Database running?
+      docker_container_info:
+        name: easystocksdatabase
+      register: dbresult
+
+    - name: Remove Database if exited
+      shell: docker rm easystocksdatabase
+      when: dbresult.exists and dbresult.container['State']['Status'] != "running"
+
+    - name: Start new Database if not running
+      docker_container:
+        name: easystocksdatabase
+        image: postgres:14.0-alpine
+        ports:
+          - '{{ POSTGRES_PORT }}'
+        restart: yes
+        env:
+          POSTGRES_PASSWORD: '{{ POSTGRES_PW }}'
+          POSTGRES_USER: '{{ POSTGRES_USER }}'
+          POSTGRES_DB: '{{ POSTGRES_DATABASE }}'
+        volumes:
+          - postgres_data:/var/lib/postgresql/data/
+      when: not dbresult.exists or dbresult.container['State']['Status'] != "running"
+
+    - name: Wait for Postgres ?
+      wait_for:
+        host: '{{ POSTGRES_HOST }}'
+        port: 5432
+
+    - name: Get Database Info
+      docker_container_info:
+        name: easystocksbackend
+      register: easystockresults
+
+    - name: Stop and rm backend
+      shell: docker stop easystocksbackend && docker rm easystocksbackend
+      when: easystockresults.exists
+
+    - name: Login In Docker Registry
+      community.docker.docker_login:
+        username: '{{ DOCKER_USERNAME }}'
+        password: '{{ DOCKER_PASSWORD }}'
+
+    - name: Start Backend
+      docker_container:
+        name: easystocksbackend
+        image: '{{ DOCKER_REPOSITORY }}'
+        ports:
+          - '{{ BACKEND_PORT }}'
+        restart: yes
+        env:
+          POSTGRES_PW: '{{ POSTGRES_PW }}'
+          POSTGRES_USER: '{{ POSTGRES_USER }}'
+          POSTGRES_HOST: '{{ POSTGRES_HOST }}'
+          POSTGRES_DATABASE: '{{ POSTGRES_DATABASE }}'
+          STOCK_APIKEY: '{{ STOCK_APIKEY }}'
+          INIT_HISTORY: '{{ INIT_HISTORY }}'

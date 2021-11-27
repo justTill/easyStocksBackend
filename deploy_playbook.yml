@@ -9,11 +9,11 @@
     POSTGRES_USER: "{{ lookup('env', 'ANS_POSTGRES_USER') }}"
     POSTGRES_PW: "{{ lookup('env', 'ANS_POSTGRES_PW') }}"
     POSTGRES_PORT: "{{ lookup('env', 'ANS_POSTGRES_PORT') }}"
-    BACKEND_PORT: "{{ lookup('env', 'BACKEND_PORT') }}"
+    BACKEND_PORT: "{{ lookup('env', 'ANS_BACKEND_PORT') }}"
     DOCKER_PASSWORD: "{{ lookup('env', 'DOCKER_PASSWORD') }}"
     DOCKER_USERNAME: "{{ lookup('env', 'DOCKER_USERNAME') }}"
     DOCKER_REPOSITORY: "{{ lookup('env', 'DOCKER_REPOSITORY') }}"
-    STOCK_APIKEY: "{{ lookup('env', 'STOCK_APIKEY') }}"
+    STOCK_APIKEY: "{{ lookup('env', 'ANS_STOCK_APIKEY') }}"
     INIT_HISTORY: "{{ lookup('env', 'ANS_INIT_HISTORY') }}"
 
   tasks:

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -20,10 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +35,13 @@ public class StockUpdateService {
     private StockDataRepository stockDataRepository;
     @Autowired
     private StockRepository stockRepository;
+    private boolean shouldInitHistory = true;
+
+    public StockUpdateService(final Environment env) {
+        if (env.getProperty("init_history") != null) {
+            this.shouldInitHistory = Objects.equals(env.getProperty("init_history"), "true");
+        }
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(StockUpdateService.class);
 
@@ -52,7 +57,7 @@ public class StockUpdateService {
     public void checkExistingHistory() {
         logger.info("Checking existing stock data history");
         final long stocksDataRowCount = stockDataRepository.count();
-        if (stocksDataRowCount == 0) {
+        if (stocksDataRowCount == 0 && shouldInitHistory) {
             logger.info("No stock data history found, starting update");
             saveDailyStocksData(true);
         } else {

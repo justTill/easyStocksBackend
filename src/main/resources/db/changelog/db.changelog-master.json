@@ -147,6 +147,92 @@
             }
           },
           {
+            "createTable": {
+              "tableName": "watchlists",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "int",
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "primaryKeyName": "pk_id_watchlists"
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "watchlist_id",
+                    "type": "uuid",
+                    "constraints": {
+                      "nullable": false,
+                      "unique": true
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "symbols",
+                    "type": "text[]",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "createTable": {
+              "tableName": "users",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "int",
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "primaryKeyName": "pk_id_users"
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "mail",
+                    "type": "varchar(255)",
+                    "constraints": {
+                      "nullable": false,
+                      "unique": true
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "password",
+                    "type": "varchar(255)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "watchlist_id",
+                    "type": "uuid",
+                    "constraints": {
+                      "nullable": false,
+                      "unique": true,
+                      "foreignKeyName": "fk_user_watchlist",
+                      "references": "watchlists(\"watchlist_id\")"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
             "sqlFile": {
               "comment": "initialInsert",
               "endDelimiter": "GO",
@@ -158,22 +244,7 @@
           }
         ]
       }
-    },
-    {
-      "changeSet": {
-        "id": "addUniqueConstraint for stock-data",
-        "author": "till pilarczyk",
-        "changes": [
-          {
-            "addUniqueConstraint": {
-              "columnNames": "symbol, date",
-              "constraintName": "stock-date-unique-constraint",
-              "schemaName": "public",
-              "tableName": "stocks_data"
-            }
-          }
-        ]
-      }
     }
   ]
 }
+

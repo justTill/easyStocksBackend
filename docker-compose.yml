@@ -18,7 +18,7 @@ services:
       - db
   db:
     restart: always
-    image: "postgres:14.0-alpine"
+    image: postgres:14.0-alpine
     container_name: easystocksdb
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -27,6 +27,6 @@ services:
       - POSTGRES_USER=postgres #${POSTGRES_USER}
       - POSTGRES_DB=easystocks #${POSTGRES_DATABASE}
     ports:
-      - "5431:5431"
+      - 5431:5431
 volumes:
   postgres_data:

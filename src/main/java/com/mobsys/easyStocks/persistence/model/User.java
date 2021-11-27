@@ -17,8 +17,7 @@ public class User implements Serializable {
     @Column
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "watchlist_id", referencedColumnName = "watchlist_id")
+    @Column
     private String watchlistId;
 
     public Integer getId() {
@@ -27,5 +26,29 @@ public class User implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getWatchlistId() {
+        return watchlistId;
+    }
+
+    public void setWatchlistId(String watchlistId) {
+        this.watchlistId = watchlistId;
     }
 }

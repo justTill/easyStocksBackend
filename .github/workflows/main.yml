@@ -84,12 +84,10 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -p 2220 -H h2899527.stratoserver.net >> ~/.ssh/known_hosts
       - name: Run Ansible Playbook
-        run: ls -l -a /home/runner/.ssh
-          - name: Run Ansible Playbook
-            uses: dawidd6/action-ansible-playbook@v2.5.0
-            with:
-              playbook: deploy_playbook.yml
-              directory: ./
-              inventory: |
-                [webservers]
-                h2899527.stratoserver.net ansible_port=2220 ansible_user=msbackend
+        uses: dawidd6/action-ansible-playbook@v2.5.0
+        with:
+          playbook: deploy_playbook.yml
+          directory: ./
+          inventory: |
+            [webservers]
+            h2899527.stratoserver.net ansible_port=2220 ansible_user=msbackend

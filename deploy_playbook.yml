@@ -31,7 +31,7 @@
         name: easystocksdatabase
         image: postgres:14.0-alpine
         ports:
-          - '{{ POSTGRES_PORT }}'
+          - '{{ POSTGRES_PORT }}:5432'
         restart: yes
         env:
           POSTGRES_PASSWORD: '{{ POSTGRES_PW }}'
@@ -65,7 +65,7 @@
         name: easystocksbackend
         image: '{{ DOCKER_REPOSITORY }}'
         ports:
-          - '{{ BACKEND_PORT }}'
+          - '{{ BACKEND_PORT }}:8080'
         restart: yes
         env:
           POSTGRES_PW: '{{ POSTGRES_PW }}'

@@ -67,6 +67,6 @@
                 - POSTGRES_USER={{ POSTGRES_USER }}
                 - POSTGRES_DB={{ POSTGRES_DATABASE }}
               ports:
-                - "5431:5431"
+                - "5432:5432"
           volumes:
             postgres_data:

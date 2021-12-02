@@ -1,79 +1,56 @@
 package com.mobsys.easyStocks.controller;
 
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-
 import com.mobsys.easyStocks.persistence.model.Stock;
-import com.mobsys.easyStocks.persistence.model.StockData;
 import com.mobsys.easyStocks.persistence.model.StockLatestData;
-import com.mobsys.easyStocks.persistence.model.StockMin;
-import com.mobsys.easyStocks.persistence.repository.StockDataRepository;
 import com.mobsys.easyStocks.persistence.repository.StockLatestDataRepository;
-import com.mobsys.easyStocks.persistence.repository.StockMinRepository;
 import com.mobsys.easyStocks.persistence.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-//@RequestMapping(path="/stocks")
+@RequestMapping(path = "/stocks")
 public class StockController {
 
-    @Autowired
-    private StockDataRepository stockDataRepository;
-    @Autowired
-    private StockMinRepository stockMinRepository;
     @Autowired
     private StockRepository stockRepository;
     @Autowired
     private StockLatestDataRepository stockLatestDataRepository;
 
-
-    @GetMapping(path = "/stocksAllData")
-    public List<Stock> getStocks() {
-        return stockRepository.findAll();
-    }
-
-    @GetMapping(path = "/stocks")
-    public List<StockLatestData> test() {
+    @GetMapping()
+    public List<StockLatestData> getLatestStockData() {
         return stockLatestDataRepository.findStockDataLatest();
     }
 
-    @GetMapping(path = "/stocksList")
-    public List<StockMin> test1() {
-        return stockMinRepository.findStock();
-    }
+    @GetMapping(path = "/{symbol}")
+    public Stock stockData(@PathVariable String symbol, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
 
-    @GetMapping(path = "/stockData")
-    public List<StockData> stockData() {
-        return stockDataRepository.findAll();
-    }
+        final Date fromDate;
+        final Date toDate;
 
-    @GetMapping(path = "/stocks/{symbol}")
-    public Stock stockData(@PathVariable String symbol) {
-        final Date to = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        c.add(Calendar.YEAR, -1);
-        final Date from = Date.from(c.toInstant());
+        if (from != null) {
+            LocalDate fromLocal = LocalDate.parse(from);
+            fromDate = Date.from(fromLocal.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        } else {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.YEAR, -1);
+            fromDate = Date.from(c.toInstant());
+        }
+        if (to != null) {
+            LocalDate toLocal = LocalDate.parse(to);
+            toDate = Date.from(toLocal.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        } else {
+            toDate = new Date();
+        }
         Stock stock = stockRepository.findBySymbol(symbol);
-        stock.setData(stock.getData().stream().sorted((data1, data2) -> -data1.getDate().compareTo(data2.getDate())).filter(data -> data.getDate().after(from) && data.getDate().before(to)).collect(Collectors.toList()));
+        stock.setData(stock.getData().stream().sorted((data1, data2) -> -data1.getDate().compareTo(data2.getDate())).filter(data -> data.getDate().after(fromDate) && data.getDate().before(toDate)).collect(Collectors.toList()));
         return stock;
     }
-
-
-    //LocalDateTime localDateTimeFrom = LocalDateTime.of(2021, 11, 27, 00, 00, 00);
-    //LocalDateTime localDateTimeTo = LocalDateTime.now();
-
-    /*@GetMapping(path="/test2")
-    public List<Stock> stockTest2(){
-        return stockRepository.findByDateBetween(localDateTimeFrom, localDateTimeTo);
-    }*/
-
 }

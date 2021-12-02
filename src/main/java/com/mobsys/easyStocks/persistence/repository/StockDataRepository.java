@@ -11,4 +11,7 @@ public interface StockDataRepository extends JpaRepository<StockData, Long> {
 
     @Query(value =  "SELECT id, symbol, adjusted_close, date, COUNT(symbol) FROM stocks_data sd GROUP BY id,symbol ORDER BY date DESC LIMIT 40;", nativeQuery = true)
     List<StockData> findStocks();
+
+
+
 }

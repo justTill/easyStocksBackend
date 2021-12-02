@@ -5,8 +5,10 @@ package com.mobsys.easyStocks.controller;
 //import org.springframework.web.bind.annotation.RestController;
 import com.mobsys.easyStocks.persistence.model.Stock;
 import com.mobsys.easyStocks.persistence.model.StockData;
+import com.mobsys.easyStocks.persistence.model.StockLatestData;
 import com.mobsys.easyStocks.persistence.model.StockMin;
 import com.mobsys.easyStocks.persistence.repository.StockDataRepository;
+import com.mobsys.easyStocks.persistence.repository.StockLatestDataRepository;
 import com.mobsys.easyStocks.persistence.repository.StockMinRepository;
 import com.mobsys.easyStocks.persistence.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,10 @@ public class StockController {
     private StockMinRepository stockMinRepository;
     @Autowired
     private StockRepository stockRepository;
+    @Autowired
+    private StockLatestDataRepository stockLatestDataRepository;
 
-    public StockController() {
-    }
+
 
     @GetMapping(path="/stocksAllData")
     public List<Stock> getStocks(){
@@ -35,7 +38,7 @@ public class StockController {
     }
 
     @GetMapping(path="/stocks")
-    public List<StockData> test(){ return stockDataRepository.findStocks(); }
+    public List<StockLatestData> test(){ return stockLatestDataRepository.findStockDataLatest(); }
 
     @GetMapping(path="/stocksList")
     public List<StockMin> test1(){ return stockMinRepository.findStock(); }

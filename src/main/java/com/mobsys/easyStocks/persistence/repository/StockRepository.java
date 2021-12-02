@@ -12,6 +12,11 @@ import java.util.List;
 public interface StockRepository extends JpaRepository<Stock, Long> {
     List<Stock> findAll();
 
+    @Query(value =  "SELECT id, name, symbol, sector_id FROM stocks", nativeQuery = true)
+    List<Stock> findStocks();
+
+    // "SELECT * FROM stocks AS s INNER JOIN stocks_data  AS d ON s.symbol = (SELECT d.symbol FROM stocks_data ORDER BY date ASC LIMIT 1)"
+
     /*@Query(value = "SELECT * FROM stocks" , nativeQuery = true)
     List<StockMin> findStock();*/
 

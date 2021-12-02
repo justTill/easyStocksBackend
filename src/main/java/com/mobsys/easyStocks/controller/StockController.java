@@ -34,15 +34,18 @@ public class StockController {
         return stockRepository.findAll();
     }
 
+    @GetMapping(path="/stocks")
+    public List<StockData> test(){ return stockDataRepository.findStocks(); }
+
+    @GetMapping(path="/stocksList")
+    public List<StockMin> test1(){ return stockMinRepository.findStock(); }
+
     @GetMapping(path="/stockData")
     public List<StockData> stockData(){
         return stockDataRepository.findAll();
     }
 
-    @GetMapping(path="/stocks")
-    public List<StockMin> stockTest(){
-        return stockMinRepository.findStock();
-    }
+
 
 
     //LocalDateTime localDateTimeFrom = LocalDateTime.of(2021, 11, 27, 00, 00, 00);

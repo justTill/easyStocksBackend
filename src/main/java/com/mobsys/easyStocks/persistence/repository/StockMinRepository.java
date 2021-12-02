@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface StockMinRepository extends JpaRepository<StockMin, Long> {
 
-    @Query(value = "SELECT * FROM stocks" , nativeQuery = true)
+    @Query(value = "SELECT id, name, symbol, sector_id FROM stocks" , nativeQuery = true)
     List<StockMin> findStock();
+
 }

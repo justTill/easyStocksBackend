@@ -147,6 +147,17 @@
             }
           },
           {
+            "sqlFile": {
+              "comment": "initialInsert",
+              "endDelimiter": "GO",
+              "splitStatements": true,
+              "relativeToChangelogFile": "true",
+              "path": "./initial-insert.sql",
+              "stripComments": true
+            }
+          },
+
+          {
             "changeSet": {
               "id": "addUniqueConstraint for stock-data",
               "author": "till pilarczyk",
@@ -256,16 +267,6 @@
                   }
                 }
               ]
-            }
-          },
-          {
-            "sqlFile": {
-              "comment": "initialInsert",
-              "endDelimiter": "GO",
-              "splitStatements": true,
-              "relativeToChangelogFile": "true",
-              "path": "./initial-insert.sql",
-              "stripComments": true
             }
           }
         ]

@@ -5,11 +5,20 @@ public class PostRegisterResponseDto {
     String username;
     String watchlistId;
 
+    public PostRegisterResponseDto() {
+    }
+
+    public PostRegisterResponseDto(final Integer id, final String username, final String watchlistId) {
+        this.id = id;
+        this.username = username;
+        this.watchlistId = watchlistId;
+    }
+
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -17,7 +26,7 @@ public class PostRegisterResponseDto {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -25,7 +34,7 @@ public class PostRegisterResponseDto {
         return watchlistId;
     }
 
-    public void setWatchlistId(String watchlistId) {
+    public void setWatchlistId(final String watchlistId) {
         this.watchlistId = watchlistId;
     }
 }

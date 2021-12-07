@@ -2,19 +2,17 @@ package com.mobsys.easyStocks.persistence.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Table(name = "watchlists")
-public class Watchlist implements Serializable {
+@Table(name = "watchlist_data")
+public class WatchlistData implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "watchlistId", referencedColumnName = "watchlistId")
-    private User watchlistId;
+    private UUID watchlistId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "symbol", referencedColumnName = "symbol")
@@ -24,15 +22,15 @@ public class Watchlist implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
-    public User getWatchlistId() {
+    public UUID getWatchlistId() {
         return watchlistId;
     }
 
-    public void setWatchlistId(User watchlistId) {
+    public void setWatchlistId(final UUID watchlistId) {
         this.watchlistId = watchlistId;
     }
 
@@ -40,7 +38,7 @@ public class Watchlist implements Serializable {
         return symbol;
     }
 
-    public void setSymbol(Stock symbol) {
+    public void setSymbol(final Stock symbol) {
         this.symbol = symbol;
     }
 }

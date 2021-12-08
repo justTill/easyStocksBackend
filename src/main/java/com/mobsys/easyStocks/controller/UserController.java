@@ -8,10 +8,12 @@ import com.mobsys.easyStocks.persistence.model.User;
 import com.mobsys.easyStocks.persistence.repository.UserRepository;
 import com.mobsys.easyStocks.persistence.repository.WatchlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -40,8 +42,7 @@ public class UserController {
             userRepository.save(user);
             return new PostRegisterResponseDto(user.getId(), username, watchlistId.toString());
         }
-        //TODO: How to Return Error?
-        return new PostRegisterResponseDto();
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exit or missing field in Request body");
     }
 
 }

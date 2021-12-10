@@ -9,3 +9,9 @@ docker run -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_D
 1. Edit run configuration in IDE and add under "program arguments" following string 
 ``--spring.profiles.active=local``
 1. Run application
+
+## getting Started (Docker)
+1. get Api Key von Alphavantage 
+2. change docker-compose enviroment variables 
+3. Start:
+``` docker-compose up -d ```

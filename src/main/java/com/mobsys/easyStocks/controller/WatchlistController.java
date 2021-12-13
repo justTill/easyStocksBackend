@@ -25,9 +25,13 @@ public class WatchlistController {
         return watchlistRepository.findStockDataLatestWatchlist(watchlist_id);
     }
 
-    @PostMapping(path = "/watchlist/{symbol}")
-    public PostWatchlistResponseDto addToWatchlist(@PathVariable String symbol) {
-        return null;
+    @RequestMapping (path = "/watchlist/{symbol}")
+    public String  addToWatchlist(@PathVariable String symbol) {
+        UUID watchlist_id = UUID.fromString("0a0399e6-9a71-4bab-976a-5ac0e2ac516d");
+        watchlistRepository.addToWatchlist(symbol, watchlist_id);
+
+        return "created";
+
     }
 
     @DeleteMapping(path = "/watchlist/{symbol}")

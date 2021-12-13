@@ -19,4 +19,5 @@ public interface StockLatestDataRepository extends JpaRepository<StockLatestData
     List<StockLatestData> findStockDataLatest();
 
 
+
 }

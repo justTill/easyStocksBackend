@@ -4,6 +4,7 @@ public class PostLoginResponseDto {
     Integer id;
     String username;
     String watchlistId;
+    String token;
 
     public Integer getId() {
         return id;
@@ -27,6 +28,14 @@ public class PostLoginResponseDto {
 
     public void setWatchlistId(String watchlistId) {
         this.watchlistId = watchlistId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }

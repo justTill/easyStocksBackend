@@ -33,10 +33,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Sig-Predict REST API Document")
-                .description("work in progress")
-                .termsOfServiceUrl("localhost")
-                .version("1.0")
+                .title("MobSys Backend API")
                 .build();
     }
 

@@ -1,6 +1,6 @@
 package com.mobsys.easyStocks.models.dtos;
 
-public class PostLoginRequestDto {
+public class AuthRequestDto {
     String username;
     String password;
 

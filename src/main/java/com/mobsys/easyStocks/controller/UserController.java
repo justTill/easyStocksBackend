@@ -3,10 +3,8 @@ package com.mobsys.easyStocks.controller;
 import java.util.UUID;
 
 import com.mobsys.easyStocks.config.JWTTokenUtil;
-import com.mobsys.easyStocks.models.dtos.PostLoginRequestDto;
-import com.mobsys.easyStocks.models.dtos.PostLoginResponseDto;
-import com.mobsys.easyStocks.models.dtos.PostRegisterRequestDto;
-import com.mobsys.easyStocks.models.dtos.PostRegisterResponseDto;
+import com.mobsys.easyStocks.models.dtos.AuthRequestDto;
+import com.mobsys.easyStocks.models.dtos.AuthResponseDto;
 import com.mobsys.easyStocks.persistence.model.User;
 import com.mobsys.easyStocks.persistence.repository.UserRepository;
 import com.mobsys.easyStocks.persistence.repository.WatchlistRepository;
@@ -47,7 +45,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping(path = "/login")
-    public PostLoginResponseDto createAuthenticationToken(@RequestBody PostLoginRequestDto authenticationRequest) {
+    public AuthResponseDto createAuthenticationToken(@RequestBody AuthRequestDto authenticationRequest) {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = userDetailsService
@@ -55,12 +53,9 @@ public class UserController {
         var user = userRepository.findFirstByMail(userDetails.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        final PostLoginResponseDto response = new PostLoginResponseDto();
-        response.setToken(token);
-        response.setUsername(user.getMail());
-        response.setWatchlistId(user.getWatchlistId().toString());
-
-        return response;
+        return new AuthResponseDto(user.getId(), user.getMail(),
+                user.getWatchlistId().toString(),
+                token);
     }
 
     private void authenticate(String username, String password) {
@@ -68,14 +63,17 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public PostRegisterResponseDto register(@RequestBody final PostRegisterRequestDto postRegisterRequestDto) {
-        final String username = postRegisterRequestDto.getUsername();
-        final String password = postRegisterRequestDto.getPassword();
+    public AuthResponseDto register(@RequestBody final AuthRequestDto authenticationRequest) {
+        final String username = authenticationRequest.getUsername();
+        final String password = authenticationRequest.getPassword();
         if (username != null && password != null && userRepository.findFirstByMail(username) == null) {
             final UUID watchlistId = UUID.randomUUID();
             final User user = new User(username, passwordEncoder.encode(password), watchlistId);
+            final UserDetails userDetails = userDetailsService
+                    .loadUserByUsername(username);
+            final String token = jwtTokenUtil.generateToken(userDetails);
             userRepository.save(user);
-            return new PostRegisterResponseDto(user.getId(), username, watchlistId.toString());
+            return new AuthResponseDto(user.getId(), username, watchlistId.toString(), token);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exit or missing field in Request body");
     }

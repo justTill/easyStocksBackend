@@ -40,21 +40,27 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         String jwtToken = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
         // only the Token
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-            } catch (IllegalArgumentException e) {
-                logger.error("Unable to get JWT Token");
-            }
-        } else {
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Missing JWT Token in Header");
+        if (requestTokenHeader == null || requestTokenHeader.length() == 0) {
+            sendMissingJwtError(response);
             return;
+        }
+        if (requestTokenHeader.startsWith("Bearer ")) {
+            jwtToken = requestTokenHeader.substring(7);
+        } else {
+            jwtToken = requestTokenHeader;
+        }
+        if (jwtToken == null || jwtToken.length() == 0) {
+            sendMissingJwtError(response);
+            return;
+        }
+        try {
+            username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        } catch (IllegalArgumentException e) {
+            logger.error("Unable to get JWT Token");
         }
 
         // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
             UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
             // if token is valid configure Spring Security to manually set
@@ -72,6 +78,11 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             }
         }
         chain.doFilter(request, response);
+    }
+
+    private void sendMissingJwtError(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.getWriter().write("{ \"error\": \"JWT Token Missing\", \"status\": 401 }");
     }
 
 }

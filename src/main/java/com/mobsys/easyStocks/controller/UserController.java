@@ -69,10 +69,10 @@ public class UserController {
         if (username != null && password != null && userRepository.findFirstByMail(username) == null) {
             final UUID watchlistId = UUID.randomUUID();
             final User user = new User(username, passwordEncoder.encode(password), watchlistId);
+            userRepository.save(user);
             final UserDetails userDetails = userDetailsService
                     .loadUserByUsername(username);
             final String token = jwtTokenUtil.generateToken(userDetails);
-            userRepository.save(user);
             return new AuthResponseDto(user.getId(), username, watchlistId.toString(), token);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exit or missing field in Request body");

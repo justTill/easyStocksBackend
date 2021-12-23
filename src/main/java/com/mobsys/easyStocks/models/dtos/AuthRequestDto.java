@@ -1,6 +1,6 @@
 package com.mobsys.easyStocks.models.dtos;
 
-public class PostRegisterRequestDto {
+public class AuthRequestDto {
     String username;
     String password;
 
@@ -8,7 +8,7 @@ public class PostRegisterRequestDto {
         return username;
     }
 
-    public void setUsername(final String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -16,7 +16,7 @@ public class PostRegisterRequestDto {
         return password;
     }
 
-    public void setPassword(final String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 

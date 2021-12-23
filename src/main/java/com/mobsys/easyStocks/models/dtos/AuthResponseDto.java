@@ -1,24 +1,23 @@
 package com.mobsys.easyStocks.models.dtos;
 
-public class PostRegisterResponseDto {
+public class AuthResponseDto {
     Integer id;
     String username;
     String watchlistId;
+    String token;
 
-    public PostRegisterResponseDto() {
-    }
-
-    public PostRegisterResponseDto(final Integer id, final String username, final String watchlistId) {
+    public AuthResponseDto(Integer id, String username, String watchlistId, String token) {
         this.id = id;
         this.username = username;
         this.watchlistId = watchlistId;
+        this.token = token;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(final Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -26,7 +25,7 @@ public class PostRegisterResponseDto {
         return username;
     }
 
-    public void setUsername(final String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -34,7 +33,16 @@ public class PostRegisterResponseDto {
         return watchlistId;
     }
 
-    public void setWatchlistId(final String watchlistId) {
+    public void setWatchlistId(String watchlistId) {
         this.watchlistId = watchlistId;
     }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
 }

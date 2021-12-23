@@ -47,7 +47,10 @@ public class WatchlistController {
 
     @DeleteMapping(path = "/watchlist/{symbol}")
     @ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
-    public String deleteFromWatchlist(@PathVariable String symbol) {
-        return "OK";
+    public List<StockLatestData> deleteFromWatchlist(@PathVariable String symbol) {
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UUID watchlistId = userRepository.findFirstByMail(user.getUsername()).getWatchlistId();
+        watchlistRepository.deleteFromWatchlist(symbol, watchlistId);
+        return watchlistRepository.findStockDataLatestWatchlist(watchlistId);
     }
 }

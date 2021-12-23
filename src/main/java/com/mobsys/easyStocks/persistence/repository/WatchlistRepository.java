@@ -34,6 +34,12 @@ public interface WatchlistRepository extends JpaRepository<StockLatestData, Long
     @Transactional
     void addToWatchlist (@Param("symbol") String symbol,@Param("watchlist_id") UUID watchlist_id);
 
+    @Modifying
+    @Query(value= "DELETE FROM watchlist_data values WHERE symbol = :symbol AND watchlist_id = :watchlist_id", nativeQuery = true)
+    @Transactional
+    void deleteFromWatchlist (@Param("symbol") String symbol,@Param("watchlist_id") UUID watchlist_id);
+
+
     /*@Transactional
     public void addToWatchlist(String symbol, UUID watchlist_id){
         entityManager.createNativeQuery("INSERT INTO watchlist_data (watchlist_id, symbol) VALUES (?,?,?)")

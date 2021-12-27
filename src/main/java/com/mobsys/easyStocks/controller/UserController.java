@@ -1,15 +1,11 @@
 package com.mobsys.easyStocks.controller;
 
-import java.util.UUID;
-
 import com.mobsys.easyStocks.config.JWTTokenUtil;
 import com.mobsys.easyStocks.models.dtos.AuthRequestDto;
 import com.mobsys.easyStocks.models.dtos.AuthResponseDto;
 import com.mobsys.easyStocks.persistence.model.User;
 import com.mobsys.easyStocks.persistence.repository.UserRepository;
-import com.mobsys.easyStocks.persistence.repository.WatchlistRepository;
 import com.mobsys.easyStocks.service.JWTUserDetailsService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,15 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.UUID;
+
 @Validated
 @RestController
 public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-
-    private WatchlistRepository watchlistRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -45,12 +40,12 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping(path = "/login")
-    public AuthResponseDto createAuthenticationToken(@RequestBody AuthRequestDto authenticationRequest) {
+    public AuthResponseDto createAuthenticationToken(@RequestBody final AuthRequestDto authenticationRequest) {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
-        var user = userRepository.findFirstByMail(userDetails.getUsername());
+        final var user = userRepository.findFirstByMail(userDetails.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return new AuthResponseDto(user.getId(), user.getMail(),
@@ -58,7 +53,7 @@ public class UserController {
                 token);
     }
 
-    private void authenticate(String username, String password) {
+    private void authenticate(final String username, final String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 

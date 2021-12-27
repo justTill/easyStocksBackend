@@ -18,6 +18,39 @@ public class WatchlistData implements Serializable {
     @JoinColumn(name = "symbol", referencedColumnName = "symbol")
     private Stock symbol;
 
+    @Column
+    private Integer DayInterval;
+
+    @Column
+    private Boolean seen;
+
+    @Column
+    private Float percentage;
+
+    public Integer getDayInterval() {
+        return DayInterval;
+    }
+
+    public void setDayInterval(final Integer dayInterval) {
+        DayInterval = dayInterval;
+    }
+
+    public Boolean getSeen() {
+        return seen;
+    }
+
+    public void setSeen(final Boolean seen) {
+        this.seen = seen;
+    }
+
+    public Float getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(final Float percentage) {
+        this.percentage = percentage;
+    }
+
     public Integer getId() {
         return id;
     }

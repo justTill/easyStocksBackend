@@ -269,6 +269,40 @@
           }
         ]
       }
+    },
+    {
+      "changeSet": {
+        "id": "modifiy Watchlist for Notifications",
+        "author": "till pilarczyk",
+        "changes": [
+          {
+            "addColumn": {
+              "tableName": "watchlist_data",
+              "columns": [
+                {
+                  "column": {
+                    "afterColumn": "symbol",
+                    "name": "seen",
+                    "type": "boolean"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "day_interval",
+                    "type": "integer"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "percentage",
+                    "type": "real"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
     }
   ]
 }

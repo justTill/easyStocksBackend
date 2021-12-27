@@ -36,10 +36,18 @@ public class StockUpdateService {
     @Autowired
     private StockRepository stockRepository;
     private boolean shouldInitHistory = true;
+    private int dayInterval = 3;
+    private float percentage = 10;
 
     public StockUpdateService(final Environment env) {
         if (env.getProperty("init_history") != null) {
             this.shouldInitHistory = Objects.equals(env.getProperty("init_history"), "true");
+        }
+        if (env.getProperty("percentage") != null) {
+            this.percentage = Float.parseFloat(Objects.requireNonNull(env.getProperty("percentage")));
+        }
+        if (env.getProperty("Interval") != null) {
+            this.dayInterval = Integer.parseInt(Objects.requireNonNull(env.getProperty("Interval")), 10);
         }
     }
 
@@ -71,6 +79,7 @@ public class StockUpdateService {
         logger.info("Start getting Daily Stock Data");
         saveDailyStocksData(false);
         logger.info("Finished getting Daily Stock Data");
+        logger.info("Calculating Notifications");
     }
 
     private final void saveDailyStocksData(final boolean withHistory) {

@@ -7,6 +7,7 @@ import com.mobsys.easyStocks.persistence.repository.WatchlistRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -22,9 +24,17 @@ public class NotificationController {
     private UserRepository userRepository;
     @Autowired
     private WatchlistRepository watchlistRepository;
-    private final int defaultInterval = 3;
-    private final float defaultPercentage = 10;
+    private int defaultInterval = 3;
+    private float defaultPercentage = 10;
 
+    public NotificationController(final Environment env) {
+        if (env.getProperty("percentage") != null) {
+            this.defaultPercentage = Float.parseFloat(Objects.requireNonNull(env.getProperty("percentage")));
+        }
+        if (env.getProperty("Interval") != null) {
+            this.defaultInterval = Integer.parseInt(Objects.requireNonNull(env.getProperty("interval")), 10);
+        }
+    }
 
     @GetMapping("/notifications")
     @ApiOperation(value = "", authorizations = {@Authorization(value = "jwtToken")})
@@ -42,12 +52,3 @@ public class NotificationController {
         return response;
     }
 }
-//notifications: [
-//  {
-//      symbol: ADS
-//      Name:
-//      Interval: 3,
-//      percentage: 20
-//      fluctuating: UP/DOWN
-//  }
-// ]

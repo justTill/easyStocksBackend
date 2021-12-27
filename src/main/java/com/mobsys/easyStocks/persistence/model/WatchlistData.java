@@ -19,7 +19,7 @@ public class WatchlistData implements Serializable {
     private Stock symbol;
 
     @Column
-    private Integer DayInterval;
+    private Integer dayInterval;
 
     @Column
     private Boolean seen;
@@ -28,11 +28,11 @@ public class WatchlistData implements Serializable {
     private Float percentage;
 
     public Integer getDayInterval() {
-        return DayInterval;
+        return dayInterval;
     }
 
     public void setDayInterval(final Integer dayInterval) {
-        DayInterval = dayInterval;
+        this.dayInterval = dayInterval;
     }
 
     public Boolean getSeen() {

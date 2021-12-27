@@ -6,7 +6,9 @@ import com.mobsys.easyStocks.alphavantage.AlphavantageApi;
 import com.mobsys.easyStocks.persistence.model.Stock;
 import com.mobsys.easyStocks.persistence.model.StockData;
 import com.mobsys.easyStocks.persistence.repository.StockDataRepository;
+import com.mobsys.easyStocks.persistence.repository.StockLatestDataRepository;
 import com.mobsys.easyStocks.persistence.repository.StockRepository;
+import com.mobsys.easyStocks.persistence.repository.WatchlistRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,13 +32,22 @@ import java.util.stream.Collectors;
 public class StockUpdateService {
 
     private final String UNIQUECONTRAINT = "stock-date-unique-constraint";
+
     @Autowired
     private AlphavantageApi api;
 
     @Autowired
     private StockDataRepository stockDataRepository;
+
+    @Autowired
+    private StockLatestDataRepository stockLatestDataRepository;
+
     @Autowired
     private StockRepository stockRepository;
+
+    @Autowired
+    private WatchlistRepository watchlistRepository;
+
     private boolean shouldInitHistory = true;
     private int dayInterval = 3;
     private float percentage = 10;
@@ -73,6 +86,12 @@ public class StockUpdateService {
         }
     }
 
+    //TODO: Remove after testing
+    @EventListener(ApplicationReadyEvent.class)
+    public void updateNotifications() {
+        saveNotifications();
+    }
+
 
     @Scheduled(cron = "0 30 23 * * *", zone = "EST")
     public final void updateDailyStockData() {
@@ -80,6 +99,7 @@ public class StockUpdateService {
         saveDailyStocksData(false);
         logger.info("Finished getting Daily Stock Data");
         logger.info("Calculating Notifications");
+        saveNotifications();
     }
 
     private final void saveDailyStocksData(final boolean withHistory) {
@@ -130,5 +150,34 @@ public class StockUpdateService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private final void saveNotifications() {
+        final var stocks = stockLatestDataRepository.findStockDataLatest();
+        stocks.forEach(latestStockData -> {
+            final var stockDataToCheckWith = this.getStockDataForIntervalAndSymbol(latestStockData.getDate(), latestStockData.getSymbol());
+            if (stockDataToCheckWith != null) {
+                final var margin = (stockDataToCheckWith.getAdjustedClose() / 100) * percentage;
+                final boolean stockRisen = latestStockData.getAdjustedClose() >= stockDataToCheckWith.getAdjustedClose() + margin;
+                final boolean stockFallen = latestStockData.getAdjustedClose() <= stockDataToCheckWith.getAdjustedClose() - margin;
+                if (stockRisen || stockFallen) {
+                    saveNotificationForSymbol(latestStockData.getSymbol());
+                }
+            }
+        });
+    }
+
+    private final StockData getStockDataForIntervalAndSymbol(final Date latestStockDataDate, final String symbol) {
+        final LocalDate dayMinusInterval = latestStockDataDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate().minusDays(dayInterval);
+        return stockDataRepository.findFirstBySymbolAndDateLessThanEqual(symbol, Date.from(dayMinusInterval.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+    }
+
+    private final void saveNotificationForSymbol(final String symbol) {
+        final var tmpStock = new Stock();
+        tmpStock.setSymbol(symbol);
+        watchlistRepository.setNotifications(tmpStock, dayInterval, percentage);
     }
 }

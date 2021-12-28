@@ -1,13 +1,13 @@
 package com.mobsys.easyStocks.models.dtos;
 
 
-public class NotificationsDto {
+public class GetNotificationsDto {
     private String symbol;
     private String name;
     private Integer interval;
     private Float percentage;
 
-    public NotificationsDto(final String symbol, final String name, final Integer interval, final Float percentage) {
+    public GetNotificationsDto(final String symbol, final String name, final Integer interval, final Float percentage) {
         this.symbol = symbol;
         this.name = name;
         this.interval = interval;

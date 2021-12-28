@@ -13,6 +13,8 @@ import java.util.UUID;
 
 public interface WatchlistRepository extends JpaRepository<WatchlistData, Long> {
 
+    List<WatchlistData> findByWatchlistId(UUID watchlistId);
+    
     List<WatchlistData> findByWatchlistIdAndSeen(UUID watchlistId, Boolean seen);
 
     @Modifying(clearAutomatically = true)

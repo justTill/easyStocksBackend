@@ -86,13 +86,6 @@ public class StockUpdateService {
         }
     }
 
-    //TODO: Remove after testing
-    @EventListener(ApplicationReadyEvent.class)
-    public void updateNotifications() {
-        saveNotifications();
-    }
-
-
     @Scheduled(cron = "0 30 23 * * *", zone = "EST")
     public final void updateDailyStockData() {
         logger.info("Start getting Daily Stock Data");

@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -164,9 +165,9 @@ public class StockUpdateService {
     }
 
     private final int getDayDifference(final Date first, final Date second) {
-        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
-        final LocalDate date1 = LocalDate.parse(first.toString(), dtf);
-        final LocalDate date2 = LocalDate.parse(second.toString(), dtf);
+        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s.A");
+        final LocalDateTime date1 = LocalDateTime.parse(first.toString(), dtf);
+        final LocalDateTime date2 = LocalDateTime.parse(second.toString(), dtf);
         return (int) Duration.between(date1, date2).toDays();
     }
 

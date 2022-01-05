@@ -168,7 +168,7 @@ public class StockUpdateService {
         final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s.A");
         final LocalDateTime date1 = LocalDateTime.parse(first.toString(), dtf);
         final LocalDateTime date2 = LocalDateTime.parse(second.toString(), dtf);
-        return (int) Duration.between(date1, date2).toDays();
+        return (int) Duration.between(date2, date1).toDays();
     }
 
     private final StockData getStockDataForIntervalAndSymbol(final Date latestStockDataDate, final String symbol) {

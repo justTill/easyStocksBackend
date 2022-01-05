@@ -16,6 +16,8 @@
     DOCKER_PASSWORD: "{{ lookup('env', 'DOCKER_PASSWORD') }}"
     DOCKER_USERNAME: "{{ lookup('env', 'DOCKER_USERNAME') }}"
     DOCKER_REPOSITORY: "{{ lookup('env', 'DOCKER_REPOSITORY') }}"
+    INTERVAL: "{{ lookup('env', 'INTERVAL') }}"
+    PERCENTAGE: "{{ lookup('env', 'PERCENTAGE') }}"
 
   tasks:
     - name: Copy composefile
@@ -56,6 +58,8 @@
                 - STOCK_APIKEY={{ STOCK_APIKEY }}
                 - INIT_HISTORY={{ INIT_HISTORY }}
                 - JWT_SECRET={{ JWT_SECRET }}
+                - INTERVAL={{ INTERVAL }}
+                - PERCENTAGE={{ PERCENTAGE }}
               depends_on:
                 - db
             db:

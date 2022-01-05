@@ -23,8 +23,10 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -150,25 +152,33 @@ public class StockUpdateService {
         stocks.forEach(latestStockData -> {
             final var stockDataToCheckWith = this.getStockDataForIntervalAndSymbol(latestStockData.getDate(), latestStockData.getSymbol());
             if (stockDataToCheckWith != null) {
-                final var margin = (stockDataToCheckWith.getAdjustedClose() / 100) * percentage;
+                final float margin = (stockDataToCheckWith.getAdjustedClose() / 100) * percentage;
                 final boolean stockRisen = latestStockData.getAdjustedClose() >= stockDataToCheckWith.getAdjustedClose() + margin;
                 final boolean stockFallen = latestStockData.getAdjustedClose() <= stockDataToCheckWith.getAdjustedClose() - margin;
                 if (stockRisen || stockFallen) {
-                    saveNotificationForSymbol(latestStockData.getSymbol());
+                    final int dayDifference = getDayDifference(latestStockData.getDate(), stockDataToCheckWith.getDate());
+                    saveNotificationForSymbol(latestStockData.getSymbol(), dayDifference);
                 }
             }
         });
+    }
+
+    private final int getDayDifference(final Date first, final Date second) {
+        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
+        final LocalDate date1 = LocalDate.parse(first.toString(), dtf);
+        final LocalDate date2 = LocalDate.parse(second.toString(), dtf);
+        return (int) Duration.between(date1, date2).toDays();
     }
 
     private final StockData getStockDataForIntervalAndSymbol(final Date latestStockDataDate, final String symbol) {
         final LocalDate dayMinusInterval = latestStockDataDate.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate().minusDays(dayInterval);
-        return stockDataRepository.findFirstBySymbolAndDateLessThanEqual(symbol, Date.from(dayMinusInterval.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        return stockDataRepository.findFirstBySymbolAndDateLessThanEqualOrderByDateDesc(symbol, Date.from(dayMinusInterval.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
     }
 
-    private final void saveNotificationForSymbol(final String symbol) {
+    private final void saveNotificationForSymbol(final String symbol, final int dayInterval) {
         final var tmpStock = new Stock();
         tmpStock.setSymbol(symbol);
         watchlistRepository.setNotifications(tmpStock, dayInterval, percentage);

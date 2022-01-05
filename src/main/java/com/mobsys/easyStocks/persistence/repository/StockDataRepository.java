@@ -10,5 +10,5 @@ public interface StockDataRepository extends JpaRepository<StockData, Long> {
     @Override
     List<StockData> findAll();
 
-    StockData findFirstBySymbolAndDateLessThanEqual(String symbol, Date before);
+    StockData findFirstBySymbolAndDateLessThanEqualOrderByDateDesc(String symbol, Date before);
 }

@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface StockLatestDataRepository extends JpaRepository<StockLatestData, Long> {
 
-    @Query(value = "select s.id, s.name, s.symbol, s.sector_id, adjusted_close, date, s2.name_de as sector_name_de ,s2.name_en as sector_name_en from stocks s join (\n" +
-            "    select distinct on (symbol) date, adjusted_close, symbol from stocks_data sd \n" +
+    @Query(value = "select s.id, s.name, s.symbol, s.sector_id, adjusted_close, close, date, s2.name_de as sector_name_de ,s2.name_en as sector_name_en from stocks s join (\n"
+            +
+            "    select distinct on (symbol) date, adjusted_close, close, symbol from stocks_data sd \n" +
             "    order by symbol desc \n" +
             ") as most\n" +
             "on most.symbol = s.symbol\n" +

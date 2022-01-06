@@ -1,11 +1,12 @@
 package com.mobsys.easyStocks.persistence.model;
 
-import liquibase.pro.packaged.C;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+
+import javax.annotation.Nullable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class StockLatestData implements Serializable {
@@ -19,9 +20,15 @@ public class StockLatestData implements Serializable {
     private String symbol;
 
     @Column
+    @Nullable
     private Float adjustedClose;
 
     @Column
+    @Nullable
+    private Float close;
+
+    @Column
+    @Nullable
     private Date date;
 
     @Column
@@ -29,7 +36,6 @@ public class StockLatestData implements Serializable {
 
     @Column
     private String sectorNameEn;
-
 
     public Integer getId() {
         return id;
@@ -85,5 +91,13 @@ public class StockLatestData implements Serializable {
 
     public void setSectorNameEn(String sectorNameEn) {
         this.sectorNameEn = sectorNameEn;
+    }
+
+    public Float getClose() {
+        return close;
+    }
+
+    public void setClose(Float close) {
+        this.close = close;
     }
 }

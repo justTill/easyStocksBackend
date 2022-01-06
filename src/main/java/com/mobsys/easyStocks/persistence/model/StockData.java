@@ -1,5 +1,6 @@
 package com.mobsys.easyStocks.persistence.model;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.Date;
 
@@ -15,7 +16,12 @@ public class StockData {
     private String symbol;
 
     @Column
+    @Nullable
     private Float adjustedClose;
+
+    @Column
+    @Nullable
+    private Float close;
 
     @Column
     private Date date;
@@ -50,5 +56,13 @@ public class StockData {
 
     public void setDate(final Date date) {
         this.date = date;
+    }
+
+    public Float getClose() {
+        return close;
+    }
+
+    public void setClose(Float close) {
+        this.close = close;
     }
 }

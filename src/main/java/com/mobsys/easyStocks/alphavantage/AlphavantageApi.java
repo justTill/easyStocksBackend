@@ -40,7 +40,7 @@ public class AlphavantageApi extends DefaultApi {
     public Mono<DailyDataResponse> getDailyData(final String symbol, final String outputSize, final String datatype) {
         logger.info("Getting data for {}...", symbol);
         checkQuotaLimitSync();
-        return queryGet(symbol, "TIME_SERIES_DAILY_ADJUSTED", outputSize, datatype);
+        return queryGet(symbol, "TIME_SERIES_DAILY", outputSize, datatype);
     }
 
     private void checkQuotaLimitSync() {

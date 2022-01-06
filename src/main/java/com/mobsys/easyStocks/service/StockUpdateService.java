@@ -153,9 +153,10 @@ public class StockUpdateService {
         stocks.forEach(latestStockData -> {
             final var stockDataToCheckWith = this.getStockDataForIntervalAndSymbol(latestStockData.getDate(),
                     latestStockData.getSymbol());
-            if (stockDataToCheckWith != null) {
+            if (stockDataToCheckWith != null && stockDataToCheckWith.getClose() != null
+                    && latestStockData.getClose() != null) {
                 final float margin = (stockDataToCheckWith.getClose() / 100) * percentage;
-                final boolean stockRisen = latestStockData.getClose() >= stockDataToCheckWith.getAdjustedClose()
+                final boolean stockRisen = latestStockData.getClose() >= stockDataToCheckWith.getClose()
                         + margin;
                 final boolean stockFallen = latestStockData
                         .getAdjustedClose() <= stockDataToCheckWith.getAdjustedClose() - margin;

@@ -89,7 +89,7 @@ public class StockUpdateService {
         }
     }
 
-    @Scheduled(cron = "0 30 23 * * *", zone = "EST")
+    @Scheduled(cron = "0 42 19 * * *", zone = "")
     public final void updateDailyStockData() {
         logger.info("Start getting Daily Stock Data");
         saveDailyStocksData(false);
@@ -159,7 +159,7 @@ public class StockUpdateService {
                 final boolean stockRisen = latestStockData.getClose() >= stockDataToCheckWith.getClose()
                         + margin;
                 final boolean stockFallen = latestStockData
-                        .getAdjustedClose() <= stockDataToCheckWith.getAdjustedClose() - margin;
+                        .getClose() <= stockDataToCheckWith.getClose() - margin;
                 if (stockRisen || stockFallen) {
                     final int dayDifference = getDayDifference(latestStockData.getDate(),
                             stockDataToCheckWith.getDate());

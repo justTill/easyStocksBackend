@@ -1,6 +1,5 @@
 package com.mobsys.easyStocks.persistence.repository;
 
-import com.mobsys.easyStocks.persistence.model.Stock;
 import com.mobsys.easyStocks.persistence.model.StockLatestData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +16,5 @@ public interface StockLatestDataRepository extends JpaRepository<StockLatestData
             "join sectors s2 \n" +
             "on s2.sector_id = s.sector_id;", nativeQuery = true)
     List<StockLatestData> findStockDataLatest();
-
-
 
 }

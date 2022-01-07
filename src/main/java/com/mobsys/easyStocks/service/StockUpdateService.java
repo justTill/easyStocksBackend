@@ -5,8 +5,7 @@ import com.mobsys.alphavantage.model.DataEntry;
 import com.mobsys.easyStocks.alphavantage.AlphavantageApi;
 import com.mobsys.easyStocks.persistence.model.Stock;
 import com.mobsys.easyStocks.persistence.model.StockData;
-import com.mobsys.easyStocks.persistence.repository.StockDataRepository;
-import com.mobsys.easyStocks.persistence.repository.StockRepository;
+import com.mobsys.easyStocks.persistence.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,11 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,18 +32,35 @@ import java.util.stream.Collectors;
 public class StockUpdateService {
 
     private final String UNIQUECONTRAINT = "stock-date-unique-constraint";
+
     @Autowired
     private AlphavantageApi api;
 
     @Autowired
     private StockDataRepository stockDataRepository;
+
+    @Autowired
+    private StockLatestDataRepository stockLatestDataRepository;
+
     @Autowired
     private StockRepository stockRepository;
+
+    @Autowired
+    private WatchlistNotificationRepository watchlistRepository;
+
     private boolean shouldInitHistory = true;
+    private int dayInterval = 3;
+    private float percentage = 10;
 
     public StockUpdateService(final Environment env) {
         if (env.getProperty("init_history") != null) {
             this.shouldInitHistory = Objects.equals(env.getProperty("init_history"), "true");
+        }
+        if (env.getProperty("percentage") != null) {
+            this.percentage = Float.parseFloat(Objects.requireNonNull(env.getProperty("percentage")));
+        }
+        if (env.getProperty("Interval") != null) {
+            this.dayInterval = Integer.parseInt(Objects.requireNonNull(env.getProperty("Interval")), 10);
         }
     }
 
@@ -65,12 +86,13 @@ public class StockUpdateService {
         }
     }
 
-
     @Scheduled(cron = "0 30 23 * * *", zone = "EST")
     public final void updateDailyStockData() {
         logger.info("Start getting Daily Stock Data");
         saveDailyStocksData(false);
         logger.info("Finished getting Daily Stock Data");
+        logger.info("Calculating Notifications");
+        saveNotifications();
     }
 
     private final void saveDailyStocksData(final boolean withHistory) {
@@ -121,5 +143,42 @@ public class StockUpdateService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private final void saveNotifications() {
+        final var stocks = stockLatestDataRepository.findStockDataLatest();
+        stocks.forEach(latestStockData -> {
+            final var stockDataToCheckWith = this.getStockDataForIntervalAndSymbol(latestStockData.getDate(), latestStockData.getSymbol());
+            if (stockDataToCheckWith != null) {
+                final float margin = (stockDataToCheckWith.getAdjustedClose() / 100) * percentage;
+                final boolean stockRisen = latestStockData.getAdjustedClose() >= stockDataToCheckWith.getAdjustedClose() + margin;
+                final boolean stockFallen = latestStockData.getAdjustedClose() <= stockDataToCheckWith.getAdjustedClose() - margin;
+                if (stockRisen || stockFallen) {
+                    final int dayDifference = getDayDifference(latestStockData.getDate(), stockDataToCheckWith.getDate());
+                    saveNotificationForSymbol(latestStockData.getSymbol(), dayDifference);
+                }
+            }
+        });
+    }
+
+    private final int getDayDifference(final Date first, final Date second) {
+        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s.A");
+        final LocalDateTime date1 = LocalDateTime.parse(first.toString(), dtf);
+        final LocalDateTime date2 = LocalDateTime.parse(second.toString(), dtf);
+        return (int) Duration.between(date2, date1).toDays();
+    }
+
+    private final StockData getStockDataForIntervalAndSymbol(final Date latestStockDataDate, final String symbol) {
+        final LocalDate dayMinusInterval = latestStockDataDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate().minusDays(dayInterval);
+        return stockDataRepository.findFirstBySymbolAndDateLessThanEqualOrderByDateDesc(symbol, Date.from(dayMinusInterval.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+    }
+
+    private final void saveNotificationForSymbol(final String symbol, final int dayInterval) {
+        final var tmpStock = new Stock();
+        tmpStock.setSymbol(symbol);
+        watchlistRepository.setNotifications(tmpStock, dayInterval, percentage);
     }
 }

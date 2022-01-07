@@ -20,6 +20,8 @@ env:
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}
+  INTERVAL: ${{ secrets.INTERVAL }}
+  PERCENTAGE: ${{ secrets.PERCENTAGE }}
 
 jobs:
   healthcheck:

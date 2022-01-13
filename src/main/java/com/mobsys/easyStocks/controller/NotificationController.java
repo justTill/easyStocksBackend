@@ -4,6 +4,7 @@ import com.mobsys.easyStocks.models.dtos.GetNotificationsDto;
 import com.mobsys.easyStocks.models.dtos.PostNotificationsDto;
 import com.mobsys.easyStocks.persistence.model.WatchlistData;
 import com.mobsys.easyStocks.persistence.repository.UserRepository;
+import com.mobsys.easyStocks.persistence.repository.WatchlistNotificationRepository;
 import com.mobsys.easyStocks.persistence.repository.WatchlistRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -26,7 +27,7 @@ public class NotificationController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private WatchlistRepository watchlistRepository;
+    private WatchlistNotificationRepository watchlistRepository;
     private int defaultInterval = 3;
     private float defaultPercentage = 10;
 

@@ -5,10 +5,7 @@ import com.mobsys.alphavantage.model.DataEntry;
 import com.mobsys.easyStocks.alphavantage.AlphavantageApi;
 import com.mobsys.easyStocks.persistence.model.Stock;
 import com.mobsys.easyStocks.persistence.model.StockData;
-import com.mobsys.easyStocks.persistence.repository.StockDataRepository;
-import com.mobsys.easyStocks.persistence.repository.StockLatestDataRepository;
-import com.mobsys.easyStocks.persistence.repository.StockRepository;
-import com.mobsys.easyStocks.persistence.repository.WatchlistRepository;
+import com.mobsys.easyStocks.persistence.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +46,7 @@ public class StockUpdateService {
     private StockRepository stockRepository;
 
     @Autowired
-    private WatchlistRepository watchlistRepository;
+    private WatchlistNotificationRepository watchlistRepository;
 
     private boolean shouldInitHistory = true;
     private int dayInterval = 3;

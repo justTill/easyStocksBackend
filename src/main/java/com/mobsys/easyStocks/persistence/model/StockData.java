@@ -17,10 +17,6 @@ public class StockData {
 
     @Column
     @Nullable
-    private Float adjustedClose;
-
-    @Column
-    @Nullable
     private Float close;
 
     @Column
@@ -42,14 +38,6 @@ public class StockData {
         this.symbol = symbol;
     }
 
-    public Float getAdjustedClose() {
-        return adjustedClose;
-    }
-
-    public void setAdjustedClose(final Float adjustedClose) {
-        this.adjustedClose = adjustedClose;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -62,7 +50,7 @@ public class StockData {
         return close;
     }
 
-    public void setClose(Float close) {
+    public void setClose(final Float close) {
         this.close = close;
     }
 }

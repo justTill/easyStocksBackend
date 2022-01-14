@@ -127,7 +127,7 @@
                 },
                 {
                   "column": {
-                    "name": "adjusted_close",
+                    "name": "close",
                     "type": "decimal",
                     "constraints": {
                       "nullable": false
@@ -299,36 +299,6 @@
                   }
                 }
               ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "changeSet": {
-        "id": "add close to stocks_data",
-        "author": "proohit",
-        "changes": [
-          {
-            "addColumn": {
-              "tableName": "stocks_data",
-              "columns": [
-                {
-                  "column": {
-                    "name": "close",
-                    "type": "decimal",
-                    "constraints": {
-                      "nullable": true
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "dropNotNullConstraint": {
-              "columnName": "adjusted_close",
-              "tableName": "stocks_data"
             }
           }
         ]

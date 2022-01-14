@@ -1,12 +1,11 @@
 package com.mobsys.easyStocks.persistence.model;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 public class StockLatestData implements Serializable {
@@ -18,10 +17,6 @@ public class StockLatestData implements Serializable {
 
     @Column
     private String symbol;
-
-    @Column
-    @Nullable
-    private Float adjustedClose;
 
     @Column
     @Nullable
@@ -41,7 +36,7 @@ public class StockLatestData implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -49,7 +44,7 @@ public class StockLatestData implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -57,23 +52,15 @@ public class StockLatestData implements Serializable {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
+    public void setSymbol(final String symbol) {
         this.symbol = symbol;
-    }
-
-    public Float getAdjustedClose() {
-        return adjustedClose;
-    }
-
-    public void setAdjustedClose(Float adjustedClose) {
-        this.adjustedClose = adjustedClose;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(final Date date) {
         this.date = date;
     }
 
@@ -81,7 +68,7 @@ public class StockLatestData implements Serializable {
         return sectorNameDe;
     }
 
-    public void setSectorNameDe(String sectorNameDe) {
+    public void setSectorNameDe(final String sectorNameDe) {
         this.sectorNameDe = sectorNameDe;
     }
 
@@ -89,7 +76,7 @@ public class StockLatestData implements Serializable {
         return sectorNameEn;
     }
 
-    public void setSectorNameEn(String sectorNameEn) {
+    public void setSectorNameEn(final String sectorNameEn) {
         this.sectorNameEn = sectorNameEn;
     }
 
@@ -97,7 +84,7 @@ public class StockLatestData implements Serializable {
         return close;
     }
 
-    public void setClose(Float close) {
+    public void setClose(final Float close) {
         this.close = close;
     }
 }

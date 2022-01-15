@@ -137,7 +137,7 @@ public class StockUpdateService {
             final StockData stockData = new StockData();
             stockData.setSymbol(stock.getSymbol());
             stockData.setDate(date);
-            stockData.setAdjustedClose(Float.parseFloat(entry.getValue().get5adjustedClose()));
+            stockData.setClose(Float.parseFloat(entry.getValue().get4close()));
             return stockData;
         } catch (final ParseException e) {
             e.printStackTrace();
@@ -148,13 +148,18 @@ public class StockUpdateService {
     private final void saveNotifications() {
         final var stocks = stockLatestDataRepository.findStockDataLatest();
         stocks.forEach(latestStockData -> {
-            final var stockDataToCheckWith = this.getStockDataForIntervalAndSymbol(latestStockData.getDate(), latestStockData.getSymbol());
-            if (stockDataToCheckWith != null) {
-                final float margin = (stockDataToCheckWith.getAdjustedClose() / 100) * percentage;
-                final boolean stockRisen = latestStockData.getAdjustedClose() >= stockDataToCheckWith.getAdjustedClose() + margin;
-                final boolean stockFallen = latestStockData.getAdjustedClose() <= stockDataToCheckWith.getAdjustedClose() - margin;
+            final var stockDataToCheckWith = this.getStockDataForIntervalAndSymbol(latestStockData.getDate(),
+                    latestStockData.getSymbol());
+            if (stockDataToCheckWith != null && stockDataToCheckWith.getClose() != null
+                    && latestStockData.getClose() != null) {
+                final float margin = (stockDataToCheckWith.getClose() / 100) * percentage;
+                final boolean stockRisen = latestStockData.getClose() >= stockDataToCheckWith.getClose()
+                        + margin;
+                final boolean stockFallen = latestStockData
+                        .getClose() <= stockDataToCheckWith.getClose() - margin;
                 if (stockRisen || stockFallen) {
-                    final int dayDifference = getDayDifference(latestStockData.getDate(), stockDataToCheckWith.getDate());
+                    final int dayDifference = getDayDifference(latestStockData.getDate(),
+                            stockDataToCheckWith.getDate());
                     saveNotificationForSymbol(latestStockData.getSymbol(), dayDifference);
                 }
             }
@@ -172,7 +177,8 @@ public class StockUpdateService {
         final LocalDate dayMinusInterval = latestStockDataDate.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate().minusDays(dayInterval);
-        return stockDataRepository.findFirstBySymbolAndDateLessThanEqualOrderByDateDesc(symbol, Date.from(dayMinusInterval.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        return stockDataRepository.findFirstBySymbolAndDateLessThanEqualOrderByDateDesc(symbol,
+                Date.from(dayMinusInterval.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
     }
 

@@ -127,7 +127,7 @@
                 },
                 {
                   "column": {
-                    "name": "adjusted_close",
+                    "name": "close",
                     "type": "decimal",
                     "constraints": {
                       "nullable": false

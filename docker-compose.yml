@@ -16,6 +16,8 @@ services:
       - INIT_HISTORY=false #${INIT_HISTORY}
       - INTERVAL=3 #${INTERVAL}
       - PERCENTAGE=2.1 #${PERCENTAGE}
+      - SCHEDULER_SCHEDULE="0 30 23 * * *"
+      - SCHEDULER_TIMEZONE="EST"
     depends_on:
       - db
   db:

@@ -60,6 +60,8 @@
                 - JWT_SECRET={{ JWT_SECRET }}
                 - INTERVAL={{ INTERVAL }}
                 - PERCENTAGE={{ PERCENTAGE }}
+                - SCHEDULER_SCHEDULE={{ SCHEDULER_SCHEDULE }}
+                - SCHEDULER_TIMEZONE={{ SCHEDULER_TIMEZONE }}
               depends_on:
                 - db
             db:

@@ -18,6 +18,8 @@
     DOCKER_REPOSITORY: "{{ lookup('env', 'DOCKER_REPOSITORY') }}"
     INTERVAL: "{{ lookup('env', 'INTERVAL') }}"
     PERCENTAGE: "{{ lookup('env', 'PERCENTAGE') }}"
+    SCHEDULER_SCHEDULE: "{{ lookup('env', 'SCHEDULER_SCHEDULE') }}"
+    SCHEDULER_TIMEZONE: "{{ lookup('env', 'SCHEDULER_TIMEZONE') }}"
 
   tasks:
     - name: Copy composefile
